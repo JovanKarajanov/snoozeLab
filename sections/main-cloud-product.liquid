@@ -1,0 +1,455 @@
+{{ 'cloud-pillow.css' | asset_url | stylesheet_tag }}
+
+{%- assign selected_variant = product.selected_or_first_available_variant -%}
+{%- assign color_option = product.options_with_values[0] -%}
+{%- assign size_option  = product.options_with_values[1] -%}
+
+{%- comment -%} Serialise variants for JS variant switching {%- endcomment -%}
+<script>
+  window.cpVariants = {{ product.variants | json }};
+  window.cpSelected = {
+    option1: {{ selected_variant.option1 | json }},
+    option2: {{ selected_variant.option2 | json }},
+    option3: {{ selected_variant.option3 | json }}
+  };
+</script>
+
+{%- comment -%}
+  Helpers: resolve swatch hex + fallback asset image from a colour name string.
+  Uses contains so it works regardless of exact casing/wording.
+{%- endcomment -%}
+{%- capture _resolve -%}{%- endcapture -%}
+
+{%- liquid
+  assign _sel_lc  = selected_variant.option1 | downcase
+  if _sel_lc contains "white"
+    assign sel_hex = "#edecea"
+    assign sel_fb  = "White pillowcase.webp"
+  elsif _sel_lc contains "light blue" or _sel_lc contains "sky"
+    assign sel_hex = "#a8c8e8"
+    assign sel_fb  = "Light blue pillowcase.webp"
+  elsif _sel_lc contains "grey" or _sel_lc contains "gray"
+    assign sel_hex = "#7a7a8a"
+    assign sel_fb  = "pillow-Gray-Core.webp"
+  elsif _sel_lc contains "navy" or _sel_lc contains "dark blue"
+    assign sel_hex = "#1e2d5a"
+    assign sel_fb  = "Navy blue pillowcase.webp"
+  else
+    assign sel_hex = "#cccccc"
+    assign sel_fb  = ""
+  endif
+  assign gallery_img_obj = selected_variant.featured_image | default: product.featured_image
+-%}
+
+<div class="cp-pdp">
+
+  <!-- ── LEFT : Image gallery ── -->
+  <div class="cp-pdp__gallery">
+    {%- if gallery_img_obj -%}
+      <img
+        class="cp-pdp__gallery-img"
+        id="cp-main-img"
+        src="{{ gallery_img_obj | image_url: width: 900 }}"
+        alt="{{ product.title | escape }}"
+        width="900" height="900"
+        loading="eager"
+      >
+    {%- elsif sel_fb != "" -%}
+      <img
+        class="cp-pdp__gallery-img"
+        id="cp-main-img"
+        src="{{ sel_fb | asset_url }}"
+        alt="{{ product.title | escape }}"
+        width="900" height="900"
+        loading="eager"
+      >
+    {%- endif -%}
+
+    {%- comment -%} One thumbnail per unique colour value (option 1) {%- endcomment -%}
+    <div class="cp-pdp__thumbs" id="cp-thumbs">
+      {%- for color_val in color_option.values -%}
+        {%- if color_val contains 'Pillowcase' -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign lc = color_val | downcase
+          if lc contains "white"
+            assign t_fb = "White pillowcase.webp"
+          elsif lc contains "light blue" or lc contains "sky"
+            assign t_fb = "Light blue pillowcase.webp"
+          elsif lc contains "grey" or lc contains "gray"
+            assign t_fb = "pillow-Gray-Core.webp"
+          elsif lc contains "navy" or lc contains "dark blue"
+            assign t_fb = "Navy blue pillowcase.webp"
+          else
+            assign t_fb = ""
+          endif
+          assign t_img_obj = nil
+          for variant in product.variants
+            if variant.option1 == color_val and t_img_obj == nil
+              assign t_img_obj = variant.featured_image
+            endif
+          endfor
+          assign thumb_active = false
+          if selected_variant.option1 == color_val
+            assign thumb_active = true
+          endif
+        -%}
+        <button
+          class="cp-pdp__thumb{% if thumb_active %} cp-pdp__thumb--active{% endif %}"
+          type="button"
+          aria-label="{{ color_val }}"
+          data-color="{{ color_val }}"
+          data-img-shopify="{% if t_img_obj %}{{ t_img_obj | image_url: width: 900 }}{% endif %}"
+          data-img-fallback="{% if t_fb != "" %}{{ t_fb | asset_url }}{% endif %}"
+        >
+          {%- if t_img_obj -%}
+            <img src="{{ t_img_obj | image_url: width: 120 }}" alt="{{ color_val }}" width="64" height="64" loading="lazy">
+          {%- elsif t_fb != "" -%}
+            <img src="{{ t_fb | asset_url }}" alt="{{ color_val }}" width="64" height="64" loading="lazy">
+          {%- endif -%}
+        </button>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  <!-- ── RIGHT : Product info ── -->
+  <div class="cp-pdp__info-wrap">
+    <div class="cp-pdp__info">
+
+      <!-- Top row -->
+      <div class="cp-pdp__top-row">
+        <span class="cp-pdp__badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Free shipping &amp; returns
+        </span>
+        <button class="cp-pdp__wish" aria-label="Save to wishlist" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+      </div>
+
+      <!-- Breadcrumb -->
+      <nav class="cp-pdp__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="/#products">Pillows</a>
+        <span aria-hidden="true">›</span>
+        <span id="cp-crumb-color">{{ selected_variant.option1 }}</span>
+      </nav>
+
+      <!-- Title -->
+      <h1 class="cp-pdp__title">{{ product.title }}</h1>
+      <p class="cp-pdp__subtitle" id="cp-color-label">{{ selected_variant.option1 }}</p>
+
+      <!-- Price -->
+      <div class="cp-pdp__price-row">
+        <span class="cp-pdp__price" id="cp-price">{{ selected_variant.price | money }}</span>
+        {%- if selected_variant.compare_at_price > selected_variant.price -%}
+          <span class="cp-pdp__price-compare">{{ selected_variant.compare_at_price | money }}</span>
+          <span class="cp-pdp__price-badge">Sale</span>
+        {%- endif -%}
+      </div>
+
+      <hr class="cp-pdp__divider">
+
+      <!-- ── Colour swatches (option 1) ── -->
+      <div class="cp-pdp__color-section">
+        <div class="cp-pdp__field-label">
+          {{ color_option.name }}: <strong id="cp-swatch-label">{{ selected_variant.option1 }}</strong>
+        </div>
+        <div class="cp-pdp__swatches" role="group" aria-label="Select {{ color_option.name }}">
+          {%- for color_val in color_option.values -%}
+            {%- if color_val contains 'Pillowcase' -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              assign sw_lc = color_val | downcase
+              if sw_lc contains "white"
+                assign sw_hex = "#edecea"
+                assign sw_fb  = "White pillowcase.webp"
+              elsif sw_lc contains "light blue" or sw_lc contains "sky"
+                assign sw_hex = "#a8c8e8"
+                assign sw_fb  = "Light blue pillowcase.webp"
+              elsif sw_lc contains "grey" or sw_lc contains "gray"
+                assign sw_hex = "#7a7a8a"
+                assign sw_fb  = "pillow-Gray-Core.webp"
+              elsif sw_lc contains "navy" or sw_lc contains "dark blue"
+                assign sw_hex = "#1e2d5a"
+                assign sw_fb  = "Navy blue pillowcase.webp"
+              else
+                assign sw_hex = "#cccccc"
+                assign sw_fb  = ""
+              endif
+              assign sw_active = false
+              if selected_variant.option1 == color_val
+                assign sw_active = true
+              endif
+              assign sw_img_obj = nil
+              for variant in product.variants
+                if variant.option1 == color_val and sw_img_obj == nil
+                  assign sw_img_obj = variant.featured_image
+                endif
+              endfor
+            -%}
+            <button
+              type="button"
+              class="cp-pdp__swatch{% if sw_active %} cp-pdp__swatch--active{% endif %}"
+              title="{{ color_val }}"
+              aria-label="{{ color_val }}"
+              aria-pressed="{{ sw_active }}"
+              data-option-index="0"
+              data-option-value="{{ color_val }}"
+              data-img-shopify="{% if sw_img_obj %}{{ sw_img_obj | image_url: width: 900 }}{% endif %}"
+              data-img-fallback="{% if sw_fb != "" %}{{ sw_fb | asset_url }}{% endif %}"
+            >
+              <span class="cp-pdp__swatch-inner" style="background:{{ sw_hex }};"></span>
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- ── Size option (option 2, if it exists) ── -->
+      {%- if size_option -%}
+        <div class="cp-pdp__size-section">
+          <div class="cp-pdp__field-label">
+            {{ size_option.name }}: <strong id="cp-size-label">{{ selected_variant.option2 }}</strong>
+          </div>
+          <div class="cp-pdp__pills" role="group" aria-label="Select {{ size_option.name }}">
+            {%- for size_val in size_option.values -%}
+              {%- assign sz_active = false -%}
+              {%- if selected_variant.option2 == size_val -%}{%- assign sz_active = true -%}{%- endif -%}
+              <button
+                type="button"
+                class="cp-pdp__pill{% if sz_active %} cp-pdp__pill--active{% endif %}"
+                data-option-index="1"
+                data-option-value="{{ size_val }}"
+                aria-pressed="{{ sz_active }}"
+              >{{ size_val }}</button>
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      <!-- Add to cart form -->
+      {%- form 'product', product, id: 'cp-product-form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" id="cp-variant-id" value="{{ selected_variant.id }}">
+
+        <div class="cp-pdp__qty-wrap">
+          <div class="cp-pdp__qty-label">Quantity</div>
+          <div class="cp-pdp__qty">
+            <button class="cp-qty-btn" type="button" data-delta="-1" aria-label="Decrease">−</button>
+            <input class="cp-qty-input" type="number" name="quantity" value="1" min="1" aria-label="Quantity">
+            <button class="cp-qty-btn" type="button" data-delta="1"  aria-label="Increase">+</button>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          name="add"
+          id="cp-add-btn"
+          class="cp-pdp__add-btn"
+          {% unless selected_variant.available %}disabled{% endunless %}
+        >
+          {%- if selected_variant.available -%}Add to Cart{%- else -%}Sold Out{%- endif -%}
+        </button>
+      {%- endform -%}
+
+      <!-- Trust signals -->
+      <ul class="cp-pdp__trust">
+        <li>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Chiropractor approved &amp; hypoallergenic
+        </li>
+      </ul>
+
+      <hr class="cp-pdp__divider">
+
+      <p class="cp-pdp__desc">
+        {%- if product.description != blank -%}
+          {{ product.description | strip_html | truncate: 220 }}
+        {%- else -%}
+          Engineered with 6-zone contoured memory foam for perfect spinal alignment. Stays cool all night, adjustable height, built for every sleep position.
+        {%- endif -%}
+      </p>
+
+      <!-- Accordion -->
+      <div class="cp-pdp__accordion">
+        <details class="cp-pdp__details">
+          <summary class="cp-pdp__summary">
+            Materials &amp; Construction
+            <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="cp-pdp__details-body">
+            <p>Premium open-cell memory foam core with 6-zone contoured support. Cooling gel-infused cover. Hypoallergenic cotton pillowcase.</p>
+            <ul>
+              <li>Core: CertiPUR-US® certified memory foam</li>
+              <li>Cover: 40% bamboo, 60% polyester blend</li>
+              <li>Pillowcase: 100% long-staple cotton</li>
+            </ul>
+          </div>
+        </details>
+        <details class="cp-pdp__details">
+          <summary class="cp-pdp__summary">
+            Dimensions &amp; Weight
+            <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="cp-pdp__details-body">
+            <ul>
+              <li>Standard: 26″ × 18″ × 4.5″ — 3.2 lbs</li>
+              <li>King: 34″ × 18″ × 4.5″ — 4.1 lbs</li>
+              <li>Adjustable height range: 3″–5.5″</li>
+            </ul>
+          </div>
+        </details>
+        <details class="cp-pdp__details">
+          <summary class="cp-pdp__summary">
+            Shipping &amp; Returns
+            <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="cp-pdp__details-body">
+            <p>Free standard shipping on all orders (3–5 business days).</p>
+          </div>
+        </details>
+        <details class="cp-pdp__details">
+          <summary class="cp-pdp__summary">
+            Care Instructions
+            <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="cp-pdp__details-body">
+            <p>Pillowcase: Machine wash cold, tumble dry low. Core: Spot clean only — air dry fully before use. Do not machine wash the memory foam core.</p>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ── State ── */
+  var variants = window.cpVariants || [];
+  var selected = [
+    window.cpSelected.option1,
+    window.cpSelected.option2,
+    window.cpSelected.option3
+  ];
+
+  /* ── DOM refs ── */
+  var mainImg   = document.getElementById('cp-main-img');
+  var variantId = document.getElementById('cp-variant-id');
+  var addBtn    = document.getElementById('cp-add-btn');
+  var priceEl   = document.getElementById('cp-price');
+  var swatchLbl = document.getElementById('cp-swatch-label');
+  var sizeLbl   = document.getElementById('cp-size-label');
+  var crumb     = document.getElementById('cp-crumb-color');
+  var colorLbl  = document.getElementById('cp-color-label');
+
+  /* ── Helpers ── */
+  function money(cents) {
+    return '$' + (cents / 100).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function findVariant() {
+    return variants.find(function (v) {
+      return (!selected[0] || v.option1 === selected[0])
+          && (!selected[1] || v.option2 === selected[1])
+          && (!selected[2] || v.option3 === selected[2]);
+    }) || variants.find(function (v) {
+      return v.option1 === selected[0];
+    });
+  }
+
+  function swapImage(btn) {
+    var src = btn.dataset.imgShopify || btn.dataset.imgFallback;
+    if (src && mainImg) {
+      mainImg.style.opacity = '0.5';
+      mainImg.src = src;
+      mainImg.onload = function () { mainImg.style.opacity = '1'; };
+    }
+  }
+
+  function applyVariant(v) {
+    if (!v) return;
+    if (variantId) variantId.value = v.id;
+    if (addBtn) {
+      addBtn.disabled    = !v.available;
+      addBtn.textContent = v.available ? 'Add to Cart' : 'Sold Out';
+    }
+    if (priceEl) priceEl.textContent = money(v.price);
+    /* update URL */
+    var url = new URL(window.location.href);
+    url.searchParams.set('variant', v.id);
+    window.history.replaceState({}, '', url.toString());
+  }
+
+  /* ── Colour swatch clicks ── */
+  document.querySelectorAll('.cp-pdp__swatch').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var val = this.dataset.optionValue;
+      selected[0] = val;
+      if (swatchLbl) swatchLbl.textContent = val;
+      if (crumb)     crumb.textContent     = val;
+      if (colorLbl)  colorLbl.textContent  = val;
+      swapImage(this);
+      /* sync thumbnails */
+      document.querySelectorAll('.cp-pdp__thumb').forEach(function (t) {
+        t.classList.toggle('cp-pdp__thumb--active', t.dataset.color === val);
+      });
+      /* active ring */
+      document.querySelectorAll('.cp-pdp__swatch').forEach(function (s) {
+        s.classList.toggle('cp-pdp__swatch--active', s.dataset.optionValue === val);
+        s.setAttribute('aria-pressed', s.dataset.optionValue === val);
+      });
+      applyVariant(findVariant());
+    });
+  });
+
+  /* ── Size pill clicks ── */
+  document.querySelectorAll('.cp-pdp__pill').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var val = this.dataset.optionValue;
+      selected[1] = val;
+      if (sizeLbl) sizeLbl.textContent = val;
+      document.querySelectorAll('.cp-pdp__pill').forEach(function (p) {
+        p.classList.toggle('cp-pdp__pill--active', p.dataset.optionValue === val);
+        p.setAttribute('aria-pressed', p.dataset.optionValue === val);
+      });
+      applyVariant(findVariant());
+    });
+  });
+
+  /* ── Thumbnail clicks ── */
+  document.querySelectorAll('.cp-pdp__thumb').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var color = this.dataset.color;
+      selected[0] = color;
+      if (swatchLbl) swatchLbl.textContent = color;
+      if (crumb)     crumb.textContent     = color;
+      if (colorLbl)  colorLbl.textContent  = color;
+      swapImage(this);
+      document.querySelectorAll('.cp-pdp__thumb').forEach(function (t) {
+        t.classList.toggle('cp-pdp__thumb--active', t.dataset.color === color);
+      });
+      document.querySelectorAll('.cp-pdp__swatch').forEach(function (s) {
+        s.classList.toggle('cp-pdp__swatch--active', s.dataset.optionValue === color);
+        s.setAttribute('aria-pressed', s.dataset.optionValue === color);
+      });
+      applyVariant(findVariant());
+    });
+  });
+
+  /* ── Quantity buttons ── */
+  document.querySelectorAll('.cp-qty-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = this.closest('.cp-pdp__qty').querySelector('.cp-qty-input');
+      input.value = Math.max(1, (parseInt(input.value, 10) || 1) + parseInt(this.dataset.delta, 10));
+    });
+  });
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Cloud Product",
+  "tag": "div",
+  "class": "cp-pdp-wrapper",
+  "settings": []
+}
+{% endschema %}

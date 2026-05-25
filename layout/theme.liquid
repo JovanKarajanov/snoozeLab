@@ -307,13 +307,21 @@
       {%- render 'cart-drawer' -%}
     {%- endif -%}
 
-    {% sections 'header-group' %}
+    {%- if template.name == 'index' -%}
+      {%- comment -%} cloud-nav renders as first section inside index.json {%- endcomment -%}
+    {%- elsif template.name == 'product' -%}
+      {% section 'cloud-nav' %}
+    {%- else -%}
+      {% sections 'header-group' %}
+    {%- endif -%}
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
+    {%- unless template.name == 'index' or template.name == 'product' -%}
+      {% sections 'footer-group' %}
+    {%- endunless -%}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>

@@ -1,0 +1,140 @@
+{%- assign product_url = section.settings.product_url | default: '/products/the-cloud-pillow' -%}
+
+<section class="cp-section" id="products">
+  <div class="cp-container">
+
+    <div class="cp-section-header">
+      <span class="cp-eyebrow">The Collection</span>
+      <h2 class="cp-heading">The Cloud™ Pillow</h2>
+      <p class="cp-subheading">Four premium colourways. One pillow engineered for every sleep position.</p>
+    </div>
+
+    <div class="cp-showcase">
+
+      <!-- Left: cycling image -->
+      <div class="cp-showcase__visual" id="cp-showcase">
+        <div class="cp-showcase__img-stack">
+          <img class="cp-showcase__img cp-showcase__img--active"
+               src="{{ 'White pillowcase.webp' | asset_url }}"
+               alt="White Core" width="700" height="700" loading="lazy">
+          <img class="cp-showcase__img"
+               src="{{ 'Light blue pillowcase.webp' | asset_url }}"
+               alt="Light Blue Core" width="700" height="700" loading="lazy">
+          <img class="cp-showcase__img"
+               src="{{ 'pillow-Gray-Core.webp' | asset_url }}"
+               alt="Grey Core" width="700" height="700" loading="lazy">
+          <img class="cp-showcase__img"
+               src="{{ 'Navy blue pillowcase.webp' | asset_url }}"
+               alt="Navy Blue Core" width="700" height="700" loading="lazy">
+        </div>
+        <div class="cp-showcase__hover-hint" aria-hidden="true">Hover to explore colours</div>
+      </div>
+
+      <!-- Right: info panel -->
+      <div class="cp-showcase__info">
+
+        <div class="cp-showcase__dots" role="group" aria-label="Colour selector">
+          <button class="cp-showcase__dot cp-showcase__dot--active"
+                  style="background:#edecea; border-color:#ccc;"
+                  data-index="0" title="White Core" aria-label="White Core"></button>
+          <button class="cp-showcase__dot"
+                  style="background:#a8c8e8;"
+                  data-index="1" title="Light Blue Core" aria-label="Light Blue Core"></button>
+          <button class="cp-showcase__dot"
+                  style="background:#7a7a8a;"
+                  data-index="2" title="Grey Core" aria-label="Grey Core"></button>
+          <button class="cp-showcase__dot"
+                  style="background:#1e2d5a;"
+                  data-index="3" title="Navy Blue Core" aria-label="Navy Blue Core"></button>
+        </div>
+
+        <p class="cp-showcase__color-name" id="cp-color-name">White Core</p>
+        <h3 class="cp-showcase__title">The Cloud™ Pillow</h3>
+
+        <p class="cp-showcase__desc">
+          6-zone contoured memory foam that adapts to every sleep position. Stays cool all night, adjustable height, chiropractor approved.
+        </p>
+
+        <ul class="cp-showcase__features">
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Stays cool all night
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Adjustable height
+          </li>
+          <li>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Hypoallergenic &amp; antibacterial
+          </li>
+        </ul>
+
+        <div class="cp-showcase__price-row">
+          <span class="cp-showcase__price">$89.00</span>
+          <span class="cp-showcase__price-note">Free shipping &amp; returns</span>
+        </div>
+
+        <div class="cp-showcase__actions">
+          <a href="{{ product_url }}" class="cp-showcase__btn-primary">Shop Now</a>
+          <a href="#about" class="cp-showcase__btn-secondary">Learn More</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  var showcase  = document.getElementById('cp-showcase');
+  if (!showcase) return;
+
+  var images    = showcase.querySelectorAll('.cp-showcase__img');
+  var dots      = document.querySelectorAll('.cp-showcase__dot');
+  var label     = document.getElementById('cp-color-name');
+  var names     = ['White Core', 'Light Blue Core', 'Grey Core', 'Navy Blue Core'];
+  var current   = 0;
+  var timer     = null;
+
+  function goTo(i) {
+    images[current].classList.remove('cp-showcase__img--active');
+    dots[current].classList.remove('cp-showcase__dot--active');
+    current = ((i % images.length) + images.length) % images.length;
+    images[current].classList.add('cp-showcase__img--active');
+    dots[current].classList.add('cp-showcase__dot--active');
+    if (label) label.textContent = names[current];
+  }
+
+  showcase.addEventListener('mouseenter', function () {
+    timer = setInterval(function () { goTo(current + 1); }, 750);
+  });
+
+  showcase.addEventListener('mouseleave', function () {
+    clearInterval(timer);
+    goTo(0);
+  });
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      clearInterval(timer);
+      goTo(parseInt(this.dataset.index, 10));
+    });
+  });
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Cloud Products",
+  "tag": "div",
+  "settings": [
+    {
+      "type": "url",
+      "id": "product_url",
+      "label": "Product page URL"
+    }
+  ]
+}
+{% endschema %}

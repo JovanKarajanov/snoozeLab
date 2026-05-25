@@ -1,0 +1,80 @@
+{{ 'cloud-pillow.css' | asset_url | stylesheet_tag }}
+
+<nav class="cp-nav">
+  <div class="cp-nav__inner">
+    <ul class="cp-nav__links">
+      <li><a href="#products">Shop</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+    </ul>
+
+    <a href="/" class="cp-nav__logo" aria-label="Home">
+      <img
+        src="{{ 'logo.png' | asset_url }}"
+        alt="{{ shop.name }}"
+        width="160"
+        height="40"
+        loading="eager"
+      >
+    </a>
+
+    <div class="cp-nav__actions">
+      <a href="/cart" class="cp-nav__cart-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        Cart ({{ cart.item_count }})
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  (function () {
+    var NAV_H = 72;
+
+    function smoothScrollTo(target) {
+      var top = target.getBoundingClientRect().top + window.pageYOffset - NAV_H;
+      if ('scrollBehavior' in document.documentElement.style) {
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      } else {
+        /* fallback for browsers without native smooth scroll */
+        var start = window.pageYOffset;
+        var diff  = top - start;
+        var startTime = null;
+        var duration  = 600;
+        function step(ts) {
+          if (!startTime) startTime = ts;
+          var progress = Math.min((ts - startTime) / duration, 1);
+          var ease = progress < 0.5
+            ? 2 * progress * progress
+            : -1 + (4 - 2 * progress) * progress;
+          window.scrollTo(0, start + diff * ease);
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href^="#"]');
+      if (!link) return;
+      var hash = link.getAttribute('href');
+      if (!hash || hash === '#') return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+      e.preventDefault();
+      smoothScrollTo(target);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Cloud Nav",
+  "tag": "div",
+  "settings": []
+}
+{% endschema %}
