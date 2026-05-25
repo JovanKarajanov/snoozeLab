@@ -141,11 +141,9 @@
 
       <!-- Price -->
       <div class="cp-pdp__price-row">
-        <span class="cp-pdp__price" id="cp-price">{{ selected_variant.price | money }}</span>
-        {%- if selected_variant.compare_at_price > selected_variant.price -%}
-          <span class="cp-pdp__price-compare">{{ selected_variant.compare_at_price | money }}</span>
-          <span class="cp-pdp__price-badge">Sale</span>
-        {%- endif -%}
+        <span class="cp-pdp__price-compare">$140.00</span>
+        <span class="cp-pdp__price cp-pdp__price--sale" id="cp-price">$78.99</span>
+        <span class="cp-pdp__price-badge">Sale</span>
       </div>
 
       <hr class="cp-pdp__divider">
@@ -335,7 +333,9 @@
   var mainImg   = document.getElementById('cp-main-img');
   var variantId = document.getElementById('cp-variant-id');
   var addBtn    = document.getElementById('cp-add-btn');
-  var priceEl   = document.getElementById('cp-price');
+  var priceEl      = document.getElementById('cp-price');
+  var comparePriceEl = document.getElementById('cp-compare-price');
+  var priceBadgeEl   = document.getElementById('cp-price-badge');
   var swatchLbl = document.getElementById('cp-swatch-label');
   var sizeLbl   = document.getElementById('cp-size-label');
   var crumb     = document.getElementById('cp-crumb-color');
@@ -373,6 +373,16 @@
       addBtn.textContent = v.available ? 'Add to Cart' : 'Sold Out';
     }
     if (priceEl) priceEl.textContent = money(v.price);
+    var onSale = v.compare_at_price && v.compare_at_price > v.price;
+    if (comparePriceEl) {
+      comparePriceEl.textContent   = onSale ? money(v.compare_at_price) : '';
+      comparePriceEl.style.display = onSale ? '' : 'none';
+    }
+    if (priceBadgeEl) priceBadgeEl.style.display = onSale ? '' : 'none';
+    if (priceEl) {
+      if (onSale) priceEl.classList.add('cp-pdp__price--sale');
+      else        priceEl.classList.remove('cp-pdp__price--sale');
+    }
     /* update URL */
     var url = new URL(window.location.href);
     url.searchParams.set('variant', v.id);

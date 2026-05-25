@@ -685,6 +685,25 @@ html { scroll-behavior: smooth; }
   font-weight: 600;
   color: var(--cp-dark);
 }
+.cp-showcase__price--sale {
+  color: #c0392b;
+}
+.cp-showcase__price-original {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--cp-grey);
+  text-decoration: line-through;
+}
+.cp-showcase__price-badge {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: #c0392b;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
 .cp-showcase__price-note {
   font-size: 13px;
   color: var(--cp-grey);
@@ -887,19 +906,24 @@ html { scroll-behavior: smooth; }
   font-weight: 600;
   color: var(--cp-dark);
 }
+.cp-pdp__price--sale {
+  color: #c0392b;
+}
 .cp-pdp__price-compare {
   font-size: 18px;
+  font-weight: 400;
   color: var(--cp-grey);
   text-decoration: line-through;
 }
 .cp-pdp__price-badge {
-  background: var(--cp-accent);
+  background: #c0392b;
   color: #fff;
-  font-size: 11px;
-  letter-spacing: 0.1em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   padding: 3px 8px;
-  font-weight: 600;
+  border-radius: 4px;
 }
 
 .cp-pdp__divider {
