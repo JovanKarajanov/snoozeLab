@@ -39,6 +39,8 @@
     assign sel_fb  = ""
   endif
   assign gallery_img_obj = selected_variant.featured_image | default: product.featured_image
+  assign gallery_fallback_alt = product.title | append: ' - ' | append: selected_variant.option1 | append: ' - ' | append: product.vendor | append: ' Ergonomic Memory Foam Butterfly Pillow'
+  assign gallery_alt = gallery_img_obj.alt | default: gallery_fallback_alt
 -%}
 
 <div class="cp-pdp">
@@ -50,7 +52,7 @@
         class="cp-pdp__gallery-img"
         id="cp-main-img"
         src="{{ gallery_img_obj | image_url: width: 900 }}"
-        alt="{{ product.title | escape }}"
+        alt="{{ gallery_alt | escape }}"
         width="900" height="900"
         loading="eager"
       >
@@ -59,7 +61,7 @@
         class="cp-pdp__gallery-img"
         id="cp-main-img"
         src="{{ sel_fb | asset_url }}"
-        alt="{{ product.title | escape }}"
+        alt="{{ gallery_alt | escape }}"
         width="900" height="900"
         loading="eager"
       >
@@ -92,6 +94,8 @@
           if selected_variant.option1 == color_val
             assign thumb_active = true
           endif
+          assign thumb_fallback_alt = color_val | append: ' - ' | append: product.title | append: ' Ergonomic Memory Foam Butterfly Pillow'
+          assign thumb_alt = t_img_obj.alt | default: thumb_fallback_alt
         -%}
         <button
           class="cp-pdp__thumb{% if thumb_active %} cp-pdp__thumb--active{% endif %}"
@@ -102,9 +106,9 @@
           data-img-fallback="{% if t_fb != "" %}{{ t_fb | asset_url }}{% endif %}"
         >
           {%- if t_img_obj -%}
-            <img src="{{ t_img_obj | image_url: width: 120 }}" alt="{{ color_val }}" width="64" height="64" loading="lazy">
+            <img src="{{ t_img_obj | image_url: width: 120 }}" alt="{{ thumb_alt | escape }}" width="64" height="64" loading="lazy">
           {%- elsif t_fb != "" -%}
-            <img src="{{ t_fb | asset_url }}" alt="{{ color_val }}" width="64" height="64" loading="lazy">
+            <img src="{{ t_fb | asset_url }}" alt="{{ thumb_alt | escape }}" width="64" height="64" loading="lazy">
           {%- endif -%}
         </button>
       {%- endfor -%}
@@ -128,9 +132,13 @@
 
       <!-- Breadcrumb -->
       <nav class="cp-pdp__breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
+        <a href="{{ routes.root_url }}">Home</a>
         <span aria-hidden="true">›</span>
-        <a href="/#products">Pillows</a>
+        {%- if collection -%}
+          <a href="{{ collection.url }}">{{ collection.title }}</a>
+        {%- else -%}
+          <a href="{{ routes.all_products_collection_url }}">Pillows</a>
+        {%- endif -%}
         <span aria-hidden="true">›</span>
         <span id="cp-crumb-color">{{ selected_variant.option1 }}</span>
       </nav>
@@ -141,9 +149,7 @@
 
       <!-- Price -->
       <div class="cp-pdp__price-row">
-        <span class="cp-pdp__price-compare">$140.00</span>
-        <span class="cp-pdp__price cp-pdp__price--sale" id="cp-price">$78.99</span>
-        <span class="cp-pdp__price-badge">Sale</span>
+        <span class="cp-pdp__price" id="cp-price">$79.99</span>
       </div>
 
       <hr class="cp-pdp__divider">
@@ -334,8 +340,6 @@
   var variantId = document.getElementById('cp-variant-id');
   var addBtn    = document.getElementById('cp-add-btn');
   var priceEl      = document.getElementById('cp-price');
-  var comparePriceEl = document.getElementById('cp-compare-price');
-  var priceBadgeEl   = document.getElementById('cp-price-badge');
   var swatchLbl = document.getElementById('cp-swatch-label');
   var sizeLbl   = document.getElementById('cp-size-label');
   var crumb     = document.getElementById('cp-crumb-color');
@@ -373,16 +377,6 @@
       addBtn.textContent = v.available ? 'Add to Cart' : 'Sold Out';
     }
     if (priceEl) priceEl.textContent = money(v.price);
-    var onSale = v.compare_at_price && v.compare_at_price > v.price;
-    if (comparePriceEl) {
-      comparePriceEl.textContent   = onSale ? money(v.compare_at_price) : '';
-      comparePriceEl.style.display = onSale ? '' : 'none';
-    }
-    if (priceBadgeEl) priceBadgeEl.style.display = onSale ? '' : 'none';
-    if (priceEl) {
-      if (onSale) priceEl.classList.add('cp-pdp__price--sale');
-      else        priceEl.classList.remove('cp-pdp__price--sale');
-    }
     /* update URL */
     var url = new URL(window.location.href);
     url.searchParams.set('variant', v.id);
@@ -453,6 +447,42 @@
     });
   });
 }());
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": {{ request.origin | json }}
+    },
+    {%- if collection -%}
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ collection.title | json }},
+      "item": {{ request.origin | append: collection.url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ product.title | json }},
+      "item": {{ request.origin | append: product.url | json }}
+    }
+    {%- else -%}
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ product.title | json }},
+      "item": {{ request.origin | append: product.url | json }}
+    }
+    {%- endif -%}
+  ]
+}
 </script>
 
 {% schema %}

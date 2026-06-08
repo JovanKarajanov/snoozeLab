@@ -752,6 +752,15 @@
       "sku": {{ product.selected_or_first_available_variant.sku | json }},
       "mpn": {{ product.id | json }},
       "material": "CertiPUR-US certified open-cell memory foam, cooling gel-infused bamboo-polyester cover",
+      {%- if product.metafields.reviews.rating.value != blank -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ product.metafields.reviews.rating.value.rating | json }},
+        "reviewCount": {{ product.metafields.reviews.rating_count | json }},
+        "bestRating": {{ product.metafields.reviews.rating.value.scale_max | json }},
+        "worstRating": "1"
+      },
+      {%- endif -%}
       "offers": {
         "@type": "Offer",
         "url": {{ request.origin | append: product.url | json }},
