@@ -19,6 +19,69 @@
     "cloud_reviews": {
       "type": "cloud-reviews",
       "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the SnoozeLab butterfly pillow made of?",
+            "answer": "Our pillow is crafted from premium memory foam with a breathable, hypoallergenic cover. The ergonomic butterfly shape cradles your neck and shoulders to reduce pressure points and improve spinal alignment while you sleep."
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the butterfly shape improve sleep quality?",
+            "answer": "The contoured center dip supports your head in a neutral position, while the raised side wings reduce shoulder strain for side sleepers. This alignment minimizes tossing and turning and can reduce neck stiffness."
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does the pillow come in different colors?",
+            "answer": "Yes — the SnoozeLab pillow is available in 8 color variants so you can match your bedroom aesthetic. All variants are the same price and made with the same premium materials."
+          }
+        },
+        "faq_4": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for my pillow?",
+            "answer": "The outer cover is machine washable on a gentle cycle. The memory foam core should not be machine washed — spot clean with a damp cloth and allow to air dry fully before reassembling."
+          }
+        },
+        "faq_5": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take to the US?",
+            "answer": "Orders ship within 1–2 business days. Standard US delivery takes 5–8 business days. Expedited options are available at checkout. All US orders qualify for free shipping."
+          }
+        },
+        "faq_6": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is US shipping really free?",
+            "answer": "Yes — all domestic US orders ship free, regardless of order size or color variant selected."
+          }
+        },
+        "faq_7": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "We offer a 30-day hassle-free return policy. If you're not completely satisfied, contact us and we'll arrange a return or exchange at no cost to you."
+          }
+        },
+        "faq_8": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which payment methods do you accept?",
+            "answer": "We accept all major credit and debit cards (Visa, Mastercard, Amex), as well as Shop Pay, Apple Pay, and Google Pay. All transactions are secured with SSL encryption."
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6", "faq_7", "faq_8"],
+      "settings": {}
     }
   },
   "order": [
@@ -26,6 +89,7 @@
     "cloud_hero",
     "cloud_products",
     "cloud_about",
-    "cloud_reviews"
+    "cloud_reviews",
+    "faq"
   ]
 }

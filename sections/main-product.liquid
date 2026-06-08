@@ -733,7 +733,64 @@
     -%}
 
     <script type="application/ld+json">
-      {{ product | structured_data }}
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "description": {{ product.description | strip_html | truncate: 300 | json }},
+      "url": {{ request.origin | append: product.url | json }},
+      "image": [
+        {%- for image in product.images limit: 5 -%}
+          {{ image | image_url: width: 1200 | replace: 'http://', 'https://' | json }}
+          {%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "SnoozeLab"
+      },
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      "mpn": {{ product.id | json }},
+      "material": "CertiPUR-US certified open-cell memory foam, cooling gel-infused bamboo-polyester cover",
+      {%- if product.metafields.reviews.rating.value != blank -%}
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": {{ product.metafields.reviews.rating.value.rating | json }},
+        "reviewCount": {{ product.metafields.reviews.rating_count | json }},
+        "bestRating": {{ product.metafields.reviews.rating.value.scale_max | json }},
+        "worstRating": "1"
+      },
+      {%- endif -%}
+      "offers": {
+        "@type": "Offer",
+        "url": {{ request.origin | append: product.url | json }},
+        "priceCurrency": {{ cart.currency.iso_code | json }},
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+        "availability": {%- if product.available -%}"https://schema.org/InStock"{%- else -%}"https://schema.org/OutOfStock"{%- endif -%},
+        "seller": {
+          "@type": "Organization",
+          "name": "SnoozeLab"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "value": "0",
+            "currency": "USD"
+          },
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "US"
+          }
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": "30",
+          "returnMethod": "https://schema.org/ReturnByMail"
+        }
+      }
+    }
     </script>
   </div>
 </product-info>

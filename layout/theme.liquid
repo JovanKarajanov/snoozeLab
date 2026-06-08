@@ -16,15 +16,44 @@
     {%- endunless -%}
 
     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if template.name == 'index' -%}
+        Ergonomic Memory Foam Pillow for Neck Pain | SnoozeLab
+      {%- elsif template.name == 'product' -%}
+        {{ product.title }} | Cervical Support Pillow | SnoozeLab
+      {%- else -%}
+        {{ page_title }}
+        {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+        {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+        {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- endif -%}
     </title>
 
-    {% if page_description %}
+    {%- if template.name == 'index' -%}
+      <meta name="description" content="The Cloud™ Butterfly Pillow by SnoozeLab — 6-zone memory foam engineered for back, side &amp; stomach sleepers. Chiropractor approved, CertiPUR-US certified. Free US shipping &amp; 30-night trial.">
+    {%- elsif template.name == 'product' and product.handle == 'the-cloud-pillow' -%}
+      <meta name="description" content="The Cloud™ Butterfly Pillow adapts to every sleep position with 6 contoured support zones. Memory foam, cooling gel cover, adjustable height. Chiropractor approved. $79.99 — Free US shipping.">
+    {%- elsif page_description -%}
       <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- endif -%}
+
+    {%- if template.name == 'index' -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "SnoozeLab",
+        "url": {{ request.origin | json }},
+        "logo": {{ settings.logo | image_url: width: 500 | replace: 'http://', 'https://' | json }},
+        "description": "SnoozeLab makes ergonomic memory foam butterfly pillows engineered for neck pain relief and cervical support. CertiPUR-US certified, chiropractor approved.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service",
+          "availableLanguage": "English"
+        },
+        "sameAs": []
+      }
+      </script>
+    {%- endif -%}
 
     {% render 'meta-tags' %}
 

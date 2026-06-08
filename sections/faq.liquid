@@ -1,0 +1,333 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap"
+  media="print"
+  onload="this.media='all'"
+>
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+</noscript>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .faq-{{ section.id }} {
+    max-width: 76rem;
+    margin: 0 auto;
+  }
+
+  .faq-{{ section.id }} .faq__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 3.6rem;
+    letter-spacing: 0.01em;
+    text-align: center;
+    margin: 0 0 5rem;
+  }
+
+  .faq-{{ section.id }} .faq__item {
+    border: none;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  }
+
+  .faq-{{ section.id }} .faq__item:last-child {
+    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  }
+
+  .faq-{{ section.id }} .faq__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4rem;
+    list-style: none;
+    cursor: pointer;
+    padding: 2.6rem 0;
+  }
+
+  .faq-{{ section.id }} .faq__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-{{ section.id }} .faq__question {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 2.2rem;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  .faq-{{ section.id }} .faq__icon {
+    position: relative;
+    flex-shrink: 0;
+    width: 1.4rem;
+    height: 1.4rem;
+    margin-top: 0.2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-{{ section.id }} .faq__icon::before,
+  .faq-{{ section.id }} .faq__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: rgb(var(--color-foreground));
+    transform: translate(-50%, -50%);
+  }
+
+  .faq-{{ section.id }} .faq__icon::before {
+    width: 100%;
+    height: 0.1rem;
+  }
+
+  .faq-{{ section.id }} .faq__icon::after {
+    width: 0.1rem;
+    height: 100%;
+  }
+
+  .faq-{{ section.id }} .faq__item[open] > .faq__summary .faq__icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-{{ section.id }} .faq__answer {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.7;
+    color: rgba(var(--color-foreground), 0.7);
+    max-width: 60rem;
+    padding: 0 0 2.8rem;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width section-{{ section.id }}-padding">
+    <div class="faq-{{ section.id }}">
+      {%- if section.settings.title != blank -%}
+        <h2 class="faq__title inline-richtext">{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+
+      <faq-accordion>
+        {%- for block in section.blocks -%}
+          <details
+            class="faq__item"
+            id="Faq-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <summary class="faq__summary" id="FaqSummary-{{ block.id }}" aria-expanded="false">
+              <h3 class="faq__question">{{ block.settings.question | escape }}</h3>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div
+              class="faq__answer"
+              id="FaqAnswer-{{ block.id }}"
+              role="region"
+              aria-labelledby="FaqSummary-{{ block.id }}"
+            >
+              <p>{{ block.settings.answer | newline_to_br }}</p>
+            </div>
+          </details>
+        {%- endfor -%}
+      </faq-accordion>
+    </div>
+  </div>
+</div>
+
+{%- assign faq_blocks = section.blocks | where: 'type', 'faq_item' -%}
+{%- if faq_blocks.size > 0 -%}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- assign faq_count = 0 -%}
+      {%- for block in faq_blocks -%}
+        {%- if block.settings.question != blank and block.settings.answer != blank -%}
+          {%- if faq_count > 0 -%},{%- endif -%}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip_html | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | json }}
+            }
+          }
+          {%- assign faq_count = faq_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+  </script>
+{%- endif -%}
+
+<script>
+  if (!customElements.get('faq-accordion')) {
+    class FaqAccordion extends HTMLElement {
+      constructor() {
+        super();
+        this.addEventListener('toggle', this.onToggle.bind(this), true);
+      }
+
+      onToggle(event) {
+        const details = event.target;
+        if (!(details instanceof HTMLDetailsElement)) return;
+
+        const summary = details.querySelector('summary');
+        if (summary) summary.setAttribute('aria-expanded', details.open);
+
+        if (!details.open) return;
+
+        this.querySelectorAll('details[open]').forEach((openDetails) => {
+          if (openDetails === details) return;
+          openDetails.removeAttribute('open');
+          const openSummary = openDetails.querySelector('summary');
+          if (openSummary) openSummary.setAttribute('aria-expanded', 'false');
+        });
+      }
+    }
+
+    customElements.define('faq-accordion', FaqAccordion);
+  }
+</script>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is the SnoozeLab butterfly pillow made of?",
+            "answer": "Our pillow is crafted from premium memory foam with a breathable, hypoallergenic cover. The ergonomic butterfly shape cradles your neck and shoulders to reduce pressure points and improve spinal alignment while you sleep."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How does the butterfly shape improve sleep quality?",
+            "answer": "The contoured center dip supports your head in a neutral position, while the raised side wings reduce shoulder strain for side sleepers. This alignment minimizes tossing and turning and can reduce neck stiffness."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Does the pillow come in different colors?",
+            "answer": "Yes — the SnoozeLab pillow is available in 8 color variants so you can match your bedroom aesthetic. All variants are the same price and made with the same premium materials."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I care for my pillow?",
+            "answer": "The outer cover is machine washable on a gentle cycle. The memory foam core should not be machine washed — spot clean with a damp cloth and allow to air dry fully before reassembling."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take to the US?",
+            "answer": "Orders ship within 1–2 business days. Standard US delivery takes 5–8 business days. Expedited options are available at checkout. All US orders qualify for free shipping."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is US shipping really free?",
+            "answer": "Yes — all domestic US orders ship free, regardless of order size or color variant selected."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "We offer a 30-day hassle-free return policy. If you're not completely satisfied, contact us and we'll arrange a return or exchange at no cost to you."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Which payment methods do you accept?",
+            "answer": "We accept all major credit and debit cards (Visa, Mastercard, Amex), as well as Shop Pay, Apple Pay, and Google Pay. All transactions are secured with SSL encryption."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
