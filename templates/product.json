@@ -1,11 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cloud_product": {
       "type": "main-cloud-product",
       "settings": {}
+    },
+    "178224292273365ba6": {
+      "type": "apps",
+      "blocks": {
+        "bundler_custom_bundle_A6RbCm": {
+          "type": "shopify://apps/bundler/blocks/custom-bundle/7a6ae1b8-3b16-449b-8429-8bb89a62c664",
+          "settings": {
+            "shortcode": ""
+          }
+        }
+      },
+      "block_order": [
+        "bundler_custom_bundle_A6RbCm"
+      ],
+      "settings": {
+        "include_margins": true
+      }
     }
   },
   "order": [
-    "cloud_product"
+    "cloud_product",
+    "178224292273365ba6"
   ]
 }
