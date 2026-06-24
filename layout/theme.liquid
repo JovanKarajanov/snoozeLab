@@ -348,9 +348,7 @@
       {{ content_for_layout }}
     </main>
 
-    {%- unless template.name == 'index' or template.name == 'product' -%}
-      {% sections 'footer-group' %}
-    {%- endunless -%}
+    {% sections 'footer-group' %}
 
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
