@@ -1,139 +1,237 @@
-{%- assign product_url = section.settings.product_url | default: '/products/the-cloud-pillow' -%}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
 
-<section class="cp-section" id="products">
-  <div class="cp-container">
-
-    <div class="cp-section-header">
-      <span class="cp-eyebrow">The Collection</span>
-      <h2 class="cp-heading">The Cloud™ Pillow</h2>
-      <p class="cp-subheading">Four premium colourways. One pillow engineered for every sleep position.</p>
-    </div>
-
-    <div class="cp-showcase">
-
-      <!-- Left: cycling image -->
-      <div class="cp-showcase__visual" id="cp-showcase">
-        <div class="cp-showcase__img-stack">
-          <img class="cp-showcase__img cp-showcase__img--active"
-               src="{{ 'White pillowcase.webp' | asset_url }}"
-               alt="White Core" width="700" height="700" loading="lazy">
-          <img class="cp-showcase__img"
-               src="{{ 'Light blue pillowcase.webp' | asset_url }}"
-               alt="Light Blue Core" width="700" height="700" loading="lazy">
-          <img class="cp-showcase__img"
-               src="{{ 'pillow-Gray-Core.webp' | asset_url }}"
-               alt="Grey Core" width="700" height="700" loading="lazy">
-          <img class="cp-showcase__img"
-               src="{{ 'Navy blue pillowcase.webp' | asset_url }}"
-               alt="Navy Blue Core" width="700" height="700" loading="lazy">
-        </div>
-        <div class="cp-showcase__hover-hint" aria-hidden="true">Hover to explore colours</div>
-      </div>
-
-      <!-- Right: info panel -->
-      <div class="cp-showcase__info">
-
-        <div class="cp-showcase__dots" role="group" aria-label="Colour selector">
-          <button class="cp-showcase__dot cp-showcase__dot--active"
-                  style="background:#edecea; border-color:#ccc;"
-                  data-index="0" title="White Core" aria-label="White Core"></button>
-          <button class="cp-showcase__dot"
-                  style="background:#a8c8e8;"
-                  data-index="1" title="Light Blue Core" aria-label="Light Blue Core"></button>
-          <button class="cp-showcase__dot"
-                  style="background:#7a7a8a;"
-                  data-index="2" title="Grey Core" aria-label="Grey Core"></button>
-          <button class="cp-showcase__dot"
-                  style="background:#1e2d5a;"
-                  data-index="3" title="Navy Blue Core" aria-label="Navy Blue Core"></button>
-        </div>
-
-        <p class="cp-showcase__color-name" id="cp-color-name">White Core</p>
-        <h3 class="cp-showcase__title">The Cloud™ Pillow</h3>
-
-        <p class="cp-showcase__desc">
-          6-zone contoured memory foam that adapts to every sleep position. Stays cool all night, adjustable height, chiropractor approved.
-        </p>
-
-        <ul class="cp-showcase__features">
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Stays cool all night
-          </li>
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Adjustable height
-          </li>
-          <li>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Hypoallergenic &amp; antibacterial
-          </li>
-        </ul>
-
-        <div class="cp-showcase__price-row">
-          <span class="cp-showcase__price">$79.99</span>
-          <span class="cp-showcase__price-note">Free shipping &amp; returns</span>
-        </div>
-
-        <div class="cp-showcase__actions">
-          <a href="{{ product_url }}" class="cp-showcase__btn-primary">Shop Now</a>
-          <a href="#about" class="cp-showcase__btn-secondary">Learn More</a>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<script>
-(function () {
-  var showcase  = document.getElementById('cp-showcase');
-  if (!showcase) return;
-
-  var images    = showcase.querySelectorAll('.cp-showcase__img');
-  var dots      = document.querySelectorAll('.cp-showcase__dot');
-  var label     = document.getElementById('cp-color-name');
-  var names     = ['White Core', 'Light Blue Core', 'Grey Core', 'Navy Blue Core'];
-  var current   = 0;
-  var timer     = null;
-
-  function goTo(i) {
-    images[current].classList.remove('cp-showcase__img--active');
-    dots[current].classList.remove('cp-showcase__dot--active');
-    current = ((i % images.length) + images.length) % images.length;
-    images[current].classList.add('cp-showcase__img--active');
-    dots[current].classList.add('cp-showcase__dot--active');
-    if (label) label.textContent = names[current];
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
-  showcase.addEventListener('mouseenter', function () {
-    timer = setInterval(function () { goTo(current + 1); }, 750);
-  });
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
 
-  showcase.addEventListener('mouseleave', function () {
-    clearInterval(timer);
-    goTo(0);
-  });
+  .fyr-badge {
+    position: absolute;
+    top: var(--spacing-2, 0.8rem);
+    left: var(--spacing-2, 0.8rem);
+    z-index: 2;
+    background-color: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4rem;
+    pointer-events: none;
+  }
 
-  dots.forEach(function (dot) {
-    dot.addEventListener('click', function () {
-      clearInterval(timer);
-      goTo(parseInt(this.dataset.index, 10));
-    });
-  });
-}());
-</script>
+  .fyr-card-wrap {
+    position: relative;
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} isolate gradient" id="products">
+  <div class="collection section-{{ section.id }}-padding page-width">
+
+    {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="title inline-richtext h1{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.subtitle != blank -%}
+          <p class="subtitle{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.subtitle }}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul
+      class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--2-col-desktop grid--1-col-tablet-down"
+      role="list"
+    >
+      {%- assign skip_styles = false -%}
+      {%- for i in (1..4) -%}
+        {%- liquid
+          case i
+            when 1
+              assign product = section.settings.product_1
+              assign badge   = section.settings.badge_1
+            when 2
+              assign product = section.settings.product_2
+              assign badge   = section.settings.badge_2
+            when 3
+              assign product = section.settings.product_3
+              assign badge   = section.settings.badge_3
+            when 4
+              assign product = section.settings.product_4
+              assign badge   = section.settings.badge_4
+          endcase
+        -%}
+
+        {%- if product != blank -%}
+          <li
+            class="grid__item fyr-card-wrap{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+              style="--animation-order: {{ forloop.index }};"
+            {% endif %}
+          >
+            {%- if badge != blank -%}
+              <span class="fyr-badge">{{ badge | escape }}</span>
+            {%- endif -%}
+
+            {% render 'card-product',
+              card_product: product,
+              media_aspect_ratio: section.settings.image_ratio,
+              show_secondary_image: false,
+              show_vendor: false,
+              show_rating: false,
+              lazy_load: true,
+              skip_styles: skip_styles,
+              section_id: section.id,
+              quick_add: false
+            %}
+
+            {%- assign skip_styles = true -%}
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+
+  </div>
+</div>
 
 {% schema %}
 {
-  "name": "Cloud Products",
+  "name": "Find Your Relief",
   "tag": "div",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
   "settings": [
     {
-      "type": "url",
-      "id": "product_url",
-      "label": "Product page URL"
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Your Relief"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Choose the product that's right for you."
+    },
+    {
+      "type": "header",
+      "content": "Product 1"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "text",
+      "id": "badge_1",
+      "label": "Badge text (product 1)"
+    },
+    {
+      "type": "header",
+      "content": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "text",
+      "id": "badge_2",
+      "label": "Badge text (product 2)"
+    },
+    {
+      "type": "header",
+      "content": "Product 3"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "text",
+      "id": "badge_3",
+      "label": "Badge text (product 3)"
+    },
+    {
+      "type": "header",
+      "content": "Product 4"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "text",
+      "id": "badge_4",
+      "label": "Badge text (product 4)"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "options": [
+        { "value": "adapt",    "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square",   "label": "Square" }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
     }
   ]
 }
