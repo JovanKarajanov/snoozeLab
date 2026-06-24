@@ -36,10 +36,6 @@
         "padding_bottom": 36
       }
     },
-    "cloud_about": {
-      "type": "cloud-about",
-      "settings": {}
-    },
     "cloud_reviews": {
       "type": "cloud-reviews",
       "settings": {}
@@ -190,7 +186,6 @@
     "cloud_nav",
     "cloud_hero",
     "cloud_products",
-    "cloud_about",
     "cloud_reviews",
     "faq"
   ]

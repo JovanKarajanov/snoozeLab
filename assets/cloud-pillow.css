@@ -345,67 +345,6 @@ html { scroll-behavior: smooth; }
   border-color: var(--cp-dark);
 }
 
-/* ---- About — image+text rows ---- */
-.cp-about__feature {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-  margin-bottom: 80px;
-}
-.cp-about__feature:last-child {
-  margin-bottom: 0;
-}
-.cp-about__feature--reverse {
-  direction: rtl;
-}
-.cp-about__feature--reverse > * {
-  direction: ltr;
-}
-.cp-about__img {
-  width: 100%;
-  border-radius: 2px;
-  display: block;
-}
-.cp-about__text-block {
-  padding: 20px 0;
-}
-.cp-about__title {
-  font-size: clamp(24px, 2.5vw, 36px);
-  font-weight: 300;
-  color: var(--cp-text);
-  margin: 0 0 20px;
-  line-height: 1.2;
-}
-.cp-about__desc {
-  font-size: 16px;
-  color: var(--cp-grey);
-  line-height: 1.7;
-  margin: 0 0 32px;
-}
-.cp-about__specs {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.cp-about__spec-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  font-size: 14px;
-  color: var(--cp-text);
-  line-height: 1.5;
-}
-.cp-about__spec-icon {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  margin-top: 1px;
-  color: var(--cp-accent);
-}
 
 /* ---- Licences grid ---- */
 .cp-licences {
@@ -1154,8 +1093,6 @@ html { scroll-behavior: smooth; }
   }
   .cp-nav__links { display: none; }
   .cp-showcase { grid-template-columns: 1fr; gap: 40px; }
-  .cp-about__feature { grid-template-columns: 1fr; gap: 36px; }
-  .cp-about__feature--reverse { direction: ltr; }
   .cp-reviews__grid { grid-template-columns: 1fr; }
   .cp-hero__img { height: 70vh; }
   /* PDP */
