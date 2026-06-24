@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "cloud_nav": {
@@ -10,7 +19,22 @@
     },
     "cloud_products": {
       "type": "cloud-products",
-      "settings": {}
+      "settings": {
+        "heading": "Find Your Relief",
+        "subtitle": "Choose the product that's right for you.",
+        "product_1": "the-cloud-pillow",
+        "badge_1": "",
+        "product_2": "ergonomic-memory-foam-lumbar-support-pillow",
+        "badge_2": "",
+        "product_3": "ergonomic-cervical-correction-pillow",
+        "badge_3": "",
+        "product_4": "ergonomic-heating-neck-massager-with-infrared-therapy",
+        "badge_4": "",
+        "image_ratio": "adapt",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     },
     "cloud_about": {
       "type": "cloud-about",
@@ -80,8 +104,22 @@
           }
         }
       },
-      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6", "faq_7", "faq_8"],
-      "settings": {}
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4",
+        "faq_5",
+        "faq_6",
+        "faq_7",
+        "faq_8"
+      ],
+      "settings": {
+        "title": "Frequently asked questions",
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
