@@ -1,12 +1,8 @@
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-price.css' | asset_url | stylesheet_tag }}
-
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
-
   @media screen and (min-width: 750px) {
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
@@ -14,31 +10,221 @@
     }
   }
 
+  /* ── Section header ── */
+  .fyr-section-header {
+    text-align: center;
+  }
+
+  /* ── Carousel outer ── */
+  .fyr-carousel-outer {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+  .fyr-viewport {
+    flex: 1;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .fyr-track {
+    display: flex;
+    gap: 1.6rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem 0.2rem 1.2rem;
+  }
+  .fyr-track::-webkit-scrollbar { display: none; }
+
+  /* ── Card ── */
+  .fyr-card {
+    flex: 0 0 280px;
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--card-corner-radius, 0.8rem);
+    overflow: hidden;
+    background: rgb(var(--color-background));
+    border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+    transition: box-shadow 0.25s ease;
+  }
+  .fyr-card:hover {
+    box-shadow: 0 8px 24px rgba(var(--color-foreground), 0.12);
+  }
+
+  /* ── Image ── */
+  .fyr-card__img-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(var(--color-foreground), 0.04);
+    flex-shrink: 0;
+  }
+  .fyr-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.2s ease;
+  }
+  .fyr-card__img.fyr-img-fade {
+    opacity: 0;
+  }
+  .fyr-card__img-wrap .placeholder-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Badge ── */
   .fyr-badge {
     position: absolute;
-    top: var(--spacing-2, 0.8rem);
-    left: var(--spacing-2, 0.8rem);
-    z-index: 2;
-    background-color: rgb(var(--color-foreground));
+    top: 1rem;
+    left: 1rem;
+    z-index: 1;
+    background: rgb(var(--color-foreground));
     color: rgb(var(--color-background));
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1;
-    padding: 0.5rem 0.9rem;
-    border-radius: 4rem;
+    font-family: var(--font-body-family);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 10rem;
+    line-height: 1.2;
     pointer-events: none;
   }
 
-  .fyr-card-wrap {
-    position: relative;
+  /* ── Color swatches (overlaid on image, appear on card hover) ── */
+  .fyr-swatches {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+  .fyr-card:hover .fyr-swatches {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .fyr-swatch {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    border: 0.2rem solid rgba(255, 255, 255, 0.85);
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    padding: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+    flex-shrink: 0;
+  }
+  .fyr-swatch:hover,
+  .fyr-swatch.is-active {
+    transform: scale(1.2);
+    border-color: white;
+  }
+
+  /* ── Card body ── */
+  .fyr-card__body {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .fyr-card__title-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .fyr-card__title {
+    font-family: var(--font-body-family);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.4rem;
+    color: rgb(var(--color-foreground));
+  }
+  .fyr-card__desc {
+    font-family: var(--font-body-family);
+    font-size: 1.3rem;
+    line-height: 1.4;
+    color: rgba(var(--color-foreground), 0.6);
+    margin: 0 0 0.8rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .fyr-card__price {
+    font-family: var(--font-body-family);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1.2rem;
+  }
+  .fyr-card__btn {
+    margin-top: auto;
+  }
+
+  /* ── Arrow buttons ── */
+  .fyr-btn {
+    flex-shrink: 0;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    border: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    background: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease;
+    padding: 0;
+  }
+  .fyr-btn:hover {
+    box-shadow: 0 2px 8px rgba(var(--color-foreground), 0.12);
+  }
+  .fyr-btn svg {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+  }
+
+  /* ── Mobile (<750px): hide arrows, touch scroll ── */
+  @media screen and (max-width: 749px) {
+    .fyr-btn { display: none; }
+  }
+
+  /* ── Desktop (≥1024px): full-width flex row, no carousel ── */
+  @media screen and (min-width: 1024px) {
+    .fyr-btn { display: none; }
+    .fyr-viewport { overflow: visible; }
+    .fyr-track {
+      overflow: visible;
+      flex-wrap: nowrap;
+      padding-bottom: 1.2rem;
+    }
+    .fyr-card {
+      flex: 1 1 0;
+      width: auto;
+      min-width: 0;
+    }
   }
 {%- endstyle -%}
 
 <div class="color-{{ section.settings.color_scheme }} isolate gradient" id="products">
-  <div class="collection section-{{ section.id }}-padding page-width">
+  <div class="section-{{ section.id }}-padding page-width">
 
     {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
-      <div class="collection__title title-wrapper title-wrapper--no-top-margin">
+      <div class="collection__title title-wrapper title-wrapper--no-top-margin fyr-section-header">
         {%- if section.settings.heading != blank -%}
           <h2 class="title inline-richtext h1{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
             {{ section.settings.heading }}
@@ -52,61 +238,192 @@
       </div>
     {%- endif -%}
 
-    <ul
-      class="grid product-grid contains-card contains-card--product{% if settings.card_style == 'standard' %} contains-card--standard{% endif %} grid--2-col-desktop grid--1-col-tablet-down"
-      role="list"
-    >
-      {%- assign skip_styles = false -%}
-      {%- for i in (1..4) -%}
-        {%- liquid
-          case i
-            when 1
-              assign product = section.settings.product_1
-              assign badge   = section.settings.badge_1
-            when 2
-              assign product = section.settings.product_2
-              assign badge   = section.settings.badge_2
-            when 3
-              assign product = section.settings.product_3
-              assign badge   = section.settings.badge_3
-            when 4
-              assign product = section.settings.product_4
-              assign badge   = section.settings.badge_4
-          endcase
-        -%}
+    <div class="fyr-carousel-outer">
 
-        {%- if product != blank -%}
-          <li
-            class="grid__item fyr-card-wrap{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-              style="--animation-order: {{ forloop.index }};"
-            {% endif %}
-          >
-            {%- if badge != blank -%}
-              <span class="fyr-badge">{{ badge | escape }}</span>
+      <button class="fyr-btn fyr-btn--prev" aria-label="Previous products" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+
+      <div class="fyr-viewport">
+        <ul class="fyr-track" id="fyr-track-{{ section.id }}" role="list">
+
+          {%- for i in (1..4) -%}
+            {%- liquid
+              case i
+                when 1
+                  assign product = section.settings.product_1
+                  assign badge   = section.settings.badge_1
+                  assign desc    = section.settings.desc_1
+                when 2
+                  assign product = section.settings.product_2
+                  assign badge   = section.settings.badge_2
+                  assign desc    = section.settings.desc_2
+                when 3
+                  assign product = section.settings.product_3
+                  assign badge   = section.settings.badge_3
+                  assign desc    = section.settings.desc_3
+                when 4
+                  assign product = section.settings.product_4
+                  assign badge   = section.settings.badge_4
+                  assign desc    = section.settings.desc_4
+              endcase
+            -%}
+
+            {%- if product != blank -%}
+              <li>
+                <div class="fyr-card">
+
+                  <div class="fyr-card__img-wrap">
+                    {%- if product.featured_image -%}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 600 }}"
+                        alt="{{ product.featured_image.alt | escape }}"
+                        class="fyr-card__img"
+                        width="600"
+                        height="600"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      {{ 'product-apparel-1' | placeholder_svg_tag: 'fyr-card__img placeholder-svg' }}
+                    {%- endif -%}
+
+                    {%- if badge != blank -%}
+                      <span class="fyr-badge">{{ badge | escape }}</span>
+                    {%- endif -%}
+
+                    {%- comment -%} Color swatches — one per unique color variant {%- endcomment -%}
+                    {%- if product.featured_image -%}
+                      {%- assign color_option_index = nil -%}
+                      {%- for option in product.options_with_values -%}
+                        {%- assign option_name_lower = option.name | downcase -%}
+                        {%- if option_name_lower == 'color' or option_name_lower == 'colour' -%}
+                          {%- assign color_option_index = forloop.index0 -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+
+                      {%- if color_option_index != nil -%}
+                        {%- assign seen_colors = '' -%}
+                        {%- assign has_swatches = false -%}
+                        {%- for variant in product.variants -%}
+                          {%- assign color_val = variant.options[color_option_index] -%}
+                          {%- assign color_key = color_val | downcase | replace: ' ', '-' -%}
+                          {%- unless seen_colors contains color_key -%}
+                            {%- assign seen_colors = seen_colors | append: color_key | append: '|' -%}
+                            {%- assign has_swatches = true -%}
+                          {%- endunless -%}
+                        {%- endfor -%}
+
+                        {%- if has_swatches -%}
+                          <div class="fyr-swatches" role="group" aria-label="Available colours">
+                            {%- assign seen_colors = '' -%}
+                            {%- for variant in product.variants -%}
+                              {%- assign color_val = variant.options[color_option_index] -%}
+                              {%- assign color_key = color_val | downcase | replace: ' ', '-' -%}
+                              {%- unless seen_colors contains color_key -%}
+                                {%- assign seen_colors = seen_colors | append: color_key | append: '|' -%}
+                                {%- assign swatch_img = variant.featured_image | default: product.featured_image -%}
+                                <button
+                                  class="fyr-swatch"
+                                  type="button"
+                                  aria-label="{{ color_val | escape }}"
+                                  data-img="{{ swatch_img | image_url: width: 600 }}"
+                                  data-alt="{{ color_val | escape }}"
+                                  style="background-image: url('{{ swatch_img | image_url: width: 80 }}');"
+                                ></button>
+                              {%- endunless -%}
+                            {%- endfor -%}
+                          </div>
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endif -%}
+
+                  </div>
+
+                  <div class="fyr-card__body">
+                    <a href="{{ product.url }}" class="fyr-card__title-link">
+                      <p class="fyr-card__title">{{ product.title | escape }}</p>
+                    </a>
+                    {%- if desc != blank -%}
+                      <p class="fyr-card__desc">{{ desc | escape }}</p>
+                    {%- endif -%}
+                    <p class="fyr-card__price">{{ product.price | money }}</p>
+                    <a href="{{ product.url }}" class="button button--full-width fyr-card__btn">Shop Now</a>
+                  </div>
+
+                </div>
+              </li>
             {%- endif -%}
+          {%- endfor -%}
 
-            {% render 'card-product',
-              card_product: product,
-              media_aspect_ratio: section.settings.image_ratio,
-              show_secondary_image: false,
-              show_vendor: false,
-              show_rating: false,
-              lazy_load: true,
-              skip_styles: skip_styles,
-              section_id: section.id,
-              quick_add: false
-            %}
+        </ul>
+      </div>
 
-            {%- assign skip_styles = true -%}
-          </li>
-        {%- endif -%}
-      {%- endfor -%}
-    </ul>
+      <button class="fyr-btn fyr-btn--next" aria-label="Next products" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+
+    </div>
 
   </div>
 </div>
+
+<script>
+(function () {
+  var track = document.getElementById('fyr-track-{{ section.id }}');
+  if (!track) return;
+
+  /* ── Carousel arrows ── */
+  var outer   = track.closest('.fyr-carousel-outer');
+  var prevBtn = outer.querySelector('.fyr-btn--prev');
+  var nextBtn = outer.querySelector('.fyr-btn--next');
+  var STEP    = 296;
+
+  prevBtn.addEventListener('click', function () {
+    track.scrollBy({ left: -STEP, behavior: 'smooth' });
+  });
+  nextBtn.addEventListener('click', function () {
+    track.scrollBy({ left: STEP, behavior: 'smooth' });
+  });
+
+  /* ── Color swatch image swap ── */
+  track.querySelectorAll('.fyr-card').forEach(function (card) {
+    var img      = card.querySelector('.fyr-card__img');
+    if (!img) return;
+
+    var swatches    = card.querySelectorAll('.fyr-swatch');
+    if (!swatches.length) return;
+
+    var originalSrc = img.src;
+    var originalAlt = img.alt;
+
+    function swapImage(src, alt) {
+      img.classList.add('fyr-img-fade');
+      setTimeout(function () {
+        img.src = src;
+        img.alt = alt;
+        img.classList.remove('fyr-img-fade');
+      }, 150);
+    }
+
+    swatches.forEach(function (swatch) {
+      swatch.addEventListener('mouseenter', function () {
+        swatches.forEach(function (s) { s.classList.remove('is-active'); });
+        swatch.classList.add('is-active');
+        swapImage(swatch.dataset.img, swatch.dataset.alt);
+      });
+    });
+
+    card.addEventListener('mouseleave', function () {
+      swatches.forEach(function (s) { s.classList.remove('is-active'); });
+      swapImage(originalSrc, originalAlt);
+    });
+  });
+}());
+</script>
 
 {% schema %}
 {
@@ -147,6 +464,11 @@
       "label": "Badge text (product 1)"
     },
     {
+      "type": "text",
+      "id": "desc_1",
+      "label": "Short description (product 1)"
+    },
+    {
       "type": "header",
       "content": "Product 2"
     },
@@ -159,6 +481,11 @@
       "type": "text",
       "id": "badge_2",
       "label": "Badge text (product 2)"
+    },
+    {
+      "type": "text",
+      "id": "desc_2",
+      "label": "Short description (product 2)"
     },
     {
       "type": "header",
@@ -175,6 +502,11 @@
       "label": "Badge text (product 3)"
     },
     {
+      "type": "text",
+      "id": "desc_3",
+      "label": "Short description (product 3)"
+    },
+    {
       "type": "header",
       "content": "Product 4"
     },
@@ -187,6 +519,11 @@
       "type": "text",
       "id": "badge_4",
       "label": "Badge text (product 4)"
+    },
+    {
+      "type": "text",
+      "id": "desc_4",
+      "label": "Short description (product 4)"
     },
     {
       "type": "header",
