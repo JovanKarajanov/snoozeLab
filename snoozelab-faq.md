@@ -1,35 +1,78 @@
 # SnoozeLab FAQ
 
-## Product
+---
 
-**What is the SnoozeLab butterfly pillow made of?**
-Our pillow is crafted from premium memory foam with a breathable, hypoallergenic cover. The ergonomic butterfly shape cradles your neck and shoulders to reduce pressure points and improve spinal alignment while you sleep.
+## Orders & Shipping
 
-**How does the butterfly shape improve sleep quality?**
-The contoured center dip supports your head in a neutral position, while the raised side wings reduce shoulder strain for side sleepers. This alignment minimizes tossing and turning and can reduce neck stiffness.
+**How long does shipping take?**
+Delivery times vary by region. Orders to the US typically arrive in 7–14 business days. Canada takes 10–16 business days, Australia 12–18 business days, and New Zealand 14–20 business days.
 
-**Does the pillow come in different colors?**
-Yes — the SnoozeLab pillow is available in 8 color variants so you can match your bedroom aesthetic. All variants are the same price and made with the same premium materials.
+**How much does shipping cost?**
+Shipping is free on all US orders. For Canada, shipping is $5 flat (free over $99). Australia is $9.99 (free over $109), and New Zealand is $12.99 (free over $129).
 
-**How do I care for my pillow?**
-The outer cover is machine washable on a gentle cycle. The memory foam core should not be machine washed — spot clean with a damp cloth and allow to air dry fully before reassembling.
+**Do you ship internationally?**
+We currently ship to the United States, Canada, Australia, and New Zealand.
+
+**Can I track my order?**
+Yes. You'll receive a tracking link by email once your order has been dispatched.
+
+**Can I change or cancel my order after placing it?**
+We process orders quickly, so changes or cancellations can only be made within 12 hours of purchase. Contact us as soon as possible at [your support email] and we'll do our best to help.
 
 ---
 
-## Shipping
-
-**How long does shipping take to the US?**
-Orders ship within 1–2 business days. Standard US delivery takes 5–8 business days. Expedited options are available at checkout. All US orders qualify for free shipping.
-
-**Is US shipping really free?**
-Yes — all domestic US orders ship free, regardless of order size or color variant selected.
-
----
-
-## Returns & Payment
+## Returns & Refunds
 
 **What is your return policy?**
-We offer a 30-day hassle-free return policy. If you're not completely satisfied, contact us and we'll arrange a return or exchange at no cost to you.
+We offer a 14-day return window from the date your order is delivered. Items must be unused and in their original packaging to be eligible.
 
-**Which payment methods do you accept?**
-We accept all major credit and debit cards (Visa, Mastercard, Amex), as well as Shop Pay, Apple Pay, and Google Pay. All transactions are secured with SSL encryption.
+**How do I start a return?**
+Email us at [your support email] with your order number and reason for return. We'll guide you through the next steps.
+
+**Who covers return shipping costs?**
+Return shipping is the customer's responsibility unless the item arrived damaged or incorrect.
+
+**When will I receive my refund?**
+Once we receive and inspect your return, refunds are processed within 5–7 business days back to your original payment method.
+
+**What if my item arrived damaged?**
+We're sorry to hear that. Please contact us within 48 hours of delivery with a photo of the damage and your order number, and we'll make it right.
+
+---
+
+## Products
+
+**Are your products suitable for all sleep positions?**
+Our range covers side sleepers, back sleepers, and those dealing with neck or back tension. Each product page includes guidance on who the product is best suited for.
+
+**What materials are your products made from?**
+We use high-density memory foam and ergonomic-grade materials across our product line. Full material details are listed on each individual product page.
+
+**Do your products come with a warranty?**
+Yes, all SnoozeLab products come with a 6-month quality warranty covering manufacturing defects.
+
+---
+
+## Bundles & Discounts
+
+**Do you offer bundles?**
+Yes — we have curated bundles designed around specific needs like neck relief, desk worker comfort, and full-body relaxation. You can find them in our store.
+
+**Can I use a discount code on a bundle?**
+Discount codes cannot be combined with bundle pricing, as bundles are already offered at a reduced rate.
+
+**How do I apply a discount code?**
+Enter your code at checkout in the "Discount code" field before completing your purchase.
+
+---
+
+## General
+
+**Where is SnoozeLab based?**
+SnoozeLab is an online-only brand. We don't have a physical retail location.
+
+**How can I contact support?**
+You can reach us at [your support email]. We aim to respond within 1–2 business days.
+
+**Do you have a loyalty or rewards program?**
+Not yet — but it's on the roadmap. Stay tuned.

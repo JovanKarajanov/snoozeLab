@@ -14,6 +14,15 @@
   .fyr-section-header {
     text-align: center;
   }
+  .fyr-eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-foreground), 0.5);
+    margin: 0 0 1.2rem;
+  }
 
   /* ── Carousel outer ── */
   .fyr-carousel-outer {
@@ -225,6 +234,9 @@
 
     {%- if section.settings.heading != blank or section.settings.subtitle != blank -%}
       <div class="collection__title title-wrapper title-wrapper--no-top-margin fyr-section-header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="fyr-eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
         {%- if section.settings.heading != blank -%}
           <h2 class="title inline-richtext h1{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
             {{ section.settings.heading }}
@@ -436,6 +448,12 @@
     {
       "type": "header",
       "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Section label",
+      "default": "THE COLLECTION"
     },
     {
       "type": "inline_richtext",

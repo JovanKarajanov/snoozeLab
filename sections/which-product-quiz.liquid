@@ -1,89 +1,142 @@
 {%- style -%}
-  .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,600&family=Montserrat:wght@300;400;500;600&display=swap');
+
+  /* Dark background — same approach as .cp-cta-banner */
+  #shopify-section-{{ section.id }},
+  #shopify-section-{{ section.id }} > div {
+    background: #3D3B8E;
   }
-  @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+  #shopify-section-{{ section.id }} {
+    overflow: hidden;
   }
 
-  .wpq-header {
+  .section-{{ section.id }}-padding {
+    padding-top: 80px;
+    padding-bottom: 80px;
     text-align: center;
-    margin-bottom: 3.2rem;
   }
-  .wpq-header .wpq-heading {
-    font-family: var(--font-heading-family);
-    font-style: var(--font-heading-style);
-    font-weight: var(--font-heading-weight);
-    font-size: clamp(2.4rem, 4vw, 3.6rem);
+
+  /* Heading: lightweight white — mirrors .cp-cta-banner__heading */
+  #shopify-section-{{ section.id }} .wpq-header {
+    margin-bottom: 3.6rem;
+  }
+  #shopify-section-{{ section.id }} .wpq-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: clamp(28px, 3vw, 44px);
     line-height: 1.2;
-    margin: 0 0 1rem;
-    color: rgb(var(--color-foreground));
+    margin: 0 0 12px;
+    color: #FFFFFF;
   }
-  .wpq-header .wpq-subtitle {
-    font-family: var(--font-body-family);
+
+  /* Subtitle — mirrors .cp-cta-banner__sub */
+  #shopify-section-{{ section.id }} .wpq-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
     font-size: 1.6rem;
     line-height: 1.5;
-    color: rgba(var(--color-foreground), 0.65);
+    color: rgba(255,255,255,0.7);
     margin: 0;
   }
 
-  .wpq-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.2rem;
+  /* 4 equal-width columns desktop */
+  #shopify-section-{{ section.id }} .wpq-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 960px;
+    margin: 0 auto;
     list-style: none;
-    margin: 0;
     padding: 0;
   }
 
-  .wpq-pill {
-    display: inline-flex;
+  /* Buttons: solid filled — mirrors .cp-cta-btn */
+  #shopify-section-{{ section.id }} .wpq-pill {
+    display: flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 1rem 2.4rem;
-    border-radius: 10rem;
-    border: 0.2rem solid #ffffff;
-    background: transparent;
-    color: #ffffff;
-    font-family: var(--font-body-family);
-    font-size: 1.5rem;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    padding: 16px 24px;
+    border-radius: 0;
+    border: 1px solid #E8845A;
+    background: #E8845A;
+    color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
     font-weight: 600;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
     text-decoration: none;
+    text-align: center;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: normal;
   }
-  .wpq-pill:hover,
-  .wpq-pill:focus-visible {
-    background-color: #C9A96E;
-    border-color: #C9A96E;
-    color: #1a1a1a;
+  #shopify-section-{{ section.id }} .wpq-pill:hover,
+  #shopify-section-{{ section.id }} .wpq-pill:focus-visible {
+    background: #D4734A;
+    border-color: #D4734A;
+    color: #FFFFFF;
     outline: none;
   }
-  .wpq-pill__icon {
-    font-size: 1.6rem;
-    line-height: 1;
-    flex-shrink: 0;
+  /* Icon field holds the label — hide the separate product title span */
+  #shopify-section-{{ section.id }} .wpq-pill span:not(.wpq-pill__icon) {
+    display: none;
+  }
+  #shopify-section-{{ section.id }} .wpq-pill__icon {
+    line-height: 1.4;
   }
 
-  /* Mobile: 2-column grid */
-  @media screen and (max-width: 749px) {
-    .wpq-buttons {
-      display: grid;
+  /* Tablet: 2×2 grid */
+  @media screen and (min-width: 768px) and (max-width: 1023px) {
+    #shopify-section-{{ section.id }} .wpq-buttons {
       grid-template-columns: 1fr 1fr;
-      gap: 1rem;
+      gap: 12px;
     }
-    .wpq-pill {
-      justify-content: center;
-      padding: 1rem 1.6rem;
-      font-size: 1.4rem;
+  }
+
+  /* Mobile: single-column stacked */
+  @media screen and (max-width: 767px) {
+    .section-{{ section.id }}-padding {
+      padding-top: 56px;
+      padding-bottom: 56px;
     }
+    #shopify-section-{{ section.id }} .wpq-buttons {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    #shopify-section-{{ section.id }} .wpq-pill {
+      padding: 14px 16px;
+    }
+  }
+
+  /* Heroicon above each pill */
+  #shopify-section-{{ section.id }} .wpq-buttons li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  #shopify-section-{{ section.id }} .wpq-icon {
+    display: block;
+    color: #FFFFFF;
+    line-height: 0;
+  }
+  #shopify-section-{{ section.id }} .wpq-icon svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+  #shopify-section-{{ section.id }} .wpq-question {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.75);
+    margin: 0;
+    min-height: 3em;
   }
 {%- endstyle -%}
 
@@ -110,26 +163,61 @@
         {%- liquid
           case i
             when 1
-              assign product = section.settings.product_1
-              assign icon    = section.settings.icon_1
+              assign product      = section.settings.product_1
+              assign icon         = section.settings.icon_1
+              assign icon_name    = section.settings.icon_name_1
+              assign question     = section.settings.question_1
+              assign button_label = section.settings.button_label_1
             when 2
-              assign product = section.settings.product_2
-              assign icon    = section.settings.icon_2
+              assign product      = section.settings.product_2
+              assign icon         = section.settings.icon_2
+              assign icon_name    = section.settings.icon_name_2
+              assign question     = section.settings.question_2
+              assign button_label = section.settings.button_label_2
             when 3
-              assign product = section.settings.product_3
-              assign icon    = section.settings.icon_3
+              assign product      = section.settings.product_3
+              assign icon         = section.settings.icon_3
+              assign icon_name    = section.settings.icon_name_3
+              assign question     = section.settings.question_3
+              assign button_label = section.settings.button_label_3
             when 4
-              assign product = section.settings.product_4
-              assign icon    = section.settings.icon_4
+              assign product      = section.settings.product_4
+              assign icon         = section.settings.icon_4
+              assign icon_name    = section.settings.icon_name_4
+              assign question     = section.settings.question_4
+              assign button_label = section.settings.button_label_4
           endcase
         -%}
 
         {%- if product != blank -%}
           <li>
+            {%- if icon_name != blank -%}
+              <span class="wpq-icon">
+                {%- case icon_name -%}
+                  {%- when 'moon' -%}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+                    </svg>
+                  {%- when 'arrow-down-circle' -%}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m9 12.75 3 3m0 0 3-3m-3 3v-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                  {%- when 'arrow-up' -%}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                    </svg>
+                  {%- when 'bolt' -%}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                    </svg>
+                {%- endcase -%}
+              </span>
+            {%- endif -%}
+            {%- if question != blank -%}
+              <p class="wpq-question">{{ question | escape }}</p>
+            {%- endif -%}
             <a href="{{ product.url }}" class="wpq-pill">
-              {%- if icon != blank -%}
-                <span class="wpq-pill__icon" aria-hidden="true">{{ icon }}</span>
-              {%- endif -%}
+              <span class="wpq-pill__icon">{{ button_label | default: product.title | escape }}</span>
               <span>{{ product.title | escape }}</span>
             </a>
           </li>
@@ -181,6 +269,30 @@
       "default": "😣"
     },
     {
+      "type": "select",
+      "id": "icon_name_1",
+      "label": "Hero icon (product 1)",
+      "default": "moon",
+      "options": [
+        { "value": "moon", "label": "Moon" },
+        { "value": "arrow-down-circle", "label": "Arrow Down Circle" },
+        { "value": "arrow-up", "label": "Arrow Up" },
+        { "value": "bolt", "label": "Bolt" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "question_1",
+      "label": "Question text (product 1)",
+      "default": "Waking up with neck pain every morning?"
+    },
+    {
+      "type": "text",
+      "id": "button_label_1",
+      "label": "Button label (product 1)",
+      "default": "Ergonomic Memory Foam Butterfly Pillow"
+    },
+    {
       "type": "header",
       "content": "Product 2"
     },
@@ -195,6 +307,30 @@
       "label": "Icon / emoji (product 2)",
       "info": "Paste an emoji or short text, e.g. 🦵",
       "default": "🦵"
+    },
+    {
+      "type": "select",
+      "id": "icon_name_2",
+      "label": "Hero icon (product 2)",
+      "default": "arrow-down-circle",
+      "options": [
+        { "value": "moon", "label": "Moon" },
+        { "value": "arrow-down-circle", "label": "Arrow Down Circle" },
+        { "value": "arrow-up", "label": "Arrow Up" },
+        { "value": "bolt", "label": "Bolt" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "question_2",
+      "label": "Question text (product 2)",
+      "default": "Does your lower back ache after sitting all day?"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Button label (product 2)",
+      "default": "Ergonomic Memory Foam Lumbar Support Pillow"
     },
     {
       "type": "header",
@@ -213,6 +349,30 @@
       "default": "💤"
     },
     {
+      "type": "select",
+      "id": "icon_name_3",
+      "label": "Hero icon (product 3)",
+      "default": "arrow-up",
+      "options": [
+        { "value": "moon", "label": "Moon" },
+        { "value": "arrow-down-circle", "label": "Arrow Down Circle" },
+        { "value": "arrow-up", "label": "Arrow Up" },
+        { "value": "bolt", "label": "Bolt" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "question_3",
+      "label": "Question text (product 3)",
+      "default": "Suffering from forward head posture or stiffness?"
+    },
+    {
+      "type": "text",
+      "id": "button_label_3",
+      "label": "Button label (product 3)",
+      "default": "Ergonomic Cervical Correction Pillow"
+    },
+    {
       "type": "header",
       "content": "Product 4"
     },
@@ -227,6 +387,30 @@
       "label": "Icon / emoji (product 4)",
       "info": "Paste an emoji or short text, e.g. 🧠",
       "default": "🧠"
+    },
+    {
+      "type": "select",
+      "id": "icon_name_4",
+      "label": "Hero icon (product 4)",
+      "default": "bolt",
+      "options": [
+        { "value": "moon", "label": "Moon" },
+        { "value": "arrow-down-circle", "label": "Arrow Down Circle" },
+        { "value": "arrow-up", "label": "ArrowUp" },
+        { "value": "bolt", "label": "Bolt" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "question_4",
+      "label": "Question text (product 4)",
+      "default": "Need instant relief from tight, tense neck muscles?"
+    },
+    {
+      "type": "text",
+      "id": "button_label_4",
+      "label": "Button label (product 4)",
+      "default": "Ergonomic Heating Neck Massager with Infrared Therapy"
     },
     {
       "type": "header",
