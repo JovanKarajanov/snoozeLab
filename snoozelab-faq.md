@@ -16,15 +16,9 @@ We currently ship to the United States, Canada, Australia, and New Zealand.
 **Can I track my order?**
 Yes. You'll receive a tracking link by email once your order has been dispatched.
 
-**Can I change or cancel my order after placing it?**
-We process orders quickly, so changes or cancellations can only be made within 12 hours of purchase. Contact us as soon as possible at [your support email] and we'll do our best to help.
-
 ---
 
 ## Returns & Refunds
-
-**What is your return policy?**
-We offer a 14-day return window from the date your order is delivered. Items must be unused and in their original packaging to be eligible.
 
 **How do I start a return?**
 Email us at [your support email] with your order number and reason for return. We'll guide you through the next steps.
@@ -45,12 +39,6 @@ We're sorry to hear that. Please contact us within 48 hours of delivery with a p
 **Are your products suitable for all sleep positions?**
 Our range covers side sleepers, back sleepers, and those dealing with neck or back tension. Each product page includes guidance on who the product is best suited for.
 
-**What materials are your products made from?**
-We use high-density memory foam and ergonomic-grade materials across our product line. Full material details are listed on each individual product page.
-
-**Do your products come with a warranty?**
-Yes, all SnoozeLab products come with a 6-month quality warranty covering manufacturing defects.
-
 ---
 
 ## Bundles & Discounts
@@ -58,21 +46,9 @@ Yes, all SnoozeLab products come with a 6-month quality warranty covering manufa
 **Do you offer bundles?**
 Yes — we have curated bundles designed around specific needs like neck relief, desk worker comfort, and full-body relaxation. You can find them in our store.
 
-**Can I use a discount code on a bundle?**
-Discount codes cannot be combined with bundle pricing, as bundles are already offered at a reduced rate.
-
-**How do I apply a discount code?**
-Enter your code at checkout in the "Discount code" field before completing your purchase.
-
 ---
 
 ## General
 
 **Where is SnoozeLab based?**
 SnoozeLab is an online-only brand. We don't have a physical retail location.
-
-**How can I contact support?**
-You can reach us at [your support email]. We aim to respond within 1–2 business days.
-
-**Do you have a loyalty or rewards program?**
-Not yet — but it's on the roadmap. Stay tuned.

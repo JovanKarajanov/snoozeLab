@@ -17,6 +17,41 @@
       "type": "cloud-hero",
       "settings": {}
     },
+    "trust_bar": {
+      "type": "trust-bar",
+      "blocks": {
+        "trust_1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "🚚",
+            "label": "FREE US SHIPPING"
+          }
+        },
+        "trust_2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "↩",
+            "label": "7-DAY RETURNS"
+          }
+        },
+        "trust_3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "⭐",
+            "label": "4.9 / 5 RATING"
+          }
+        },
+        "trust_4": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "🔒",
+            "label": "SECURE CHECKOUT"
+          }
+        }
+      },
+      "block_order": ["trust_1", "trust_2", "trust_3", "trust_4"],
+      "settings": {}
+    },
     "cloud_products": {
       "type": "cloud-products",
       "settings": {
@@ -54,6 +89,43 @@
         "padding_bottom": 96
       }
     },
+    "why_snoozelab": {
+      "type": "why-snoozelab",
+      "blocks": {
+        "benefit_1": {
+          "type": "benefit",
+          "settings": {
+            "title": "Clinically Designed",
+            "description": "Every pillow and massager is engineered around real cervical and lumbar anatomy — not trends."
+          }
+        },
+        "benefit_2": {
+          "type": "benefit",
+          "settings": {
+            "title": "Premium Memory Foam",
+            "description": "High-density memory foam that contours to your neck and spine, night after night."
+          }
+        },
+        "benefit_3": {
+          "type": "benefit",
+          "settings": {
+            "title": "7-Day Returns",
+            "description": "Not satisfied? Send it back within 7 days, no questions asked."
+          }
+        },
+        "benefit_4": {
+          "type": "benefit",
+          "settings": {
+            "title": "Free US Shipping",
+            "description": "Free shipping on every order to the US — delivered straight to your door."
+          }
+        }
+      },
+      "block_order": ["benefit_1", "benefit_2", "benefit_3", "benefit_4"],
+      "settings": {
+        "eyebrow_text": "WHY SNOOZELAB"
+      }
+    },
     "cloud_reviews": {
       "type": "cloud-reviews",
       "settings": {}
@@ -87,20 +159,6 @@
           "settings": {
             "question": "Can I track my order?",
             "answer": "Yes. You'll receive a tracking link by email once your order has been dispatched."
-          }
-        },
-        "faq_5": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Can I change or cancel my order after placing it?",
-            "answer": "We process orders quickly, so changes or cancellations can only be made within 12 hours of purchase. Contact us as soon as possible and we'll do our best to help."
-          }
-        },
-        "faq_6": {
-          "type": "faq_item",
-          "settings": {
-            "question": "What is your return policy?",
-            "answer": "We offer a 14-day return window from the date your order is delivered. Items must be unused and in their original packaging to be eligible."
           }
         },
         "faq_7": {
@@ -138,59 +196,17 @@
             "answer": "Our range covers side sleepers, back sleepers, and those dealing with neck or back tension. Each product page includes guidance on who the product is best suited for."
           }
         },
-        "faq_12": {
-          "type": "faq_item",
-          "settings": {
-            "question": "What materials are your products made from?",
-            "answer": "We use high-density memory foam and ergonomic-grade materials across our product line. Full material details are listed on each individual product page."
-          }
-        },
-        "faq_13": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Do your products come with a warranty?",
-            "answer": "Yes, all SnoozeLab products come with a 6-month quality warranty covering manufacturing defects."
-          }
-        },
         "faq_14": {
           "type": "faq_item",
           "settings": {
             "question": "Do you offer bundles?",
             "answer": "Yes — we have curated bundles designed around specific needs like neck relief, desk worker comfort, and full-body relaxation. You can find them in our store."
           }
-        },
-        "faq_15": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Can I use a discount code on a bundle?",
-            "answer": "Discount codes cannot be combined with bundle pricing, as bundles are already offered at a reduced rate."
-          }
-        },
-        "faq_16": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How do I apply a discount code?",
-            "answer": "Enter your code at checkout in the \"Discount code\" field before completing your purchase."
-          }
-        },
-        "faq_17": {
-          "type": "faq_item",
-          "settings": {
-            "question": "How can I contact support?",
-            "answer": "You can reach us by email. We aim to respond within 1–2 business days."
-          }
-        },
-        "faq_18": {
-          "type": "faq_item",
-          "settings": {
-            "question": "Do you have a loyalty or rewards program?",
-            "answer": "Not yet — but it's on the roadmap. Stay tuned."
-          }
         }
       },
       "block_order": [
-        "faq_1", "faq_2", "faq_3", "faq_4", "faq_5", "faq_6", "faq_7", "faq_8", "faq_9",
-        "faq_10", "faq_11", "faq_12", "faq_13", "faq_14", "faq_15", "faq_16", "faq_17", "faq_18"
+        "faq_1", "faq_2", "faq_3", "faq_4", "faq_7", "faq_8", "faq_9",
+        "faq_10", "faq_11", "faq_14"
       ],
       "settings": {
         "title": "Frequently asked questions",
@@ -203,7 +219,9 @@
   "order": [
     "cloud_nav",
     "cloud_hero",
+    "trust_bar",
     "cloud_products",
+    "why_snoozelab",
     "which_product_quiz",
     "cloud_reviews",
     "faq"

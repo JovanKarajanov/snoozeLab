@@ -1,0 +1,184 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Montserrat:wght@400;600&display=swap"
+  media="print"
+  onload="this.media='all'"
+>
+<noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&family=Montserrat:wght@400;600&display=swap">
+</noscript>
+
+{%- style -%}
+  .why-snoozelab-{{ section.id }} {
+    background-color: #F7F5F1;
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  @media screen and (min-width: 768px) {
+    .why-snoozelab-{{ section.id }} {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    color: #888888;
+    margin: 0 0 40px;
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 24px;
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  @media screen and (max-width: 767px) {
+    .why-snoozelab-{{ section.id }} .why-snoozelab__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 479px) {
+    .why-snoozelab-{{ section.id }} .why-snoozelab__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__icon {
+    margin-bottom: 16px;
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #1A1A1A;
+    margin: 0 0 10px;
+  }
+
+  .why-snoozelab-{{ section.id }} .why-snoozelab__text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #888888;
+    max-width: 180px;
+    margin: 0 auto;
+  }
+{%- endstyle -%}
+
+<div class="why-snoozelab-{{ section.id }}">
+  {%- if section.settings.eyebrow_text != blank -%}
+    <p class="why-snoozelab__eyebrow">{{ section.settings.eyebrow_text | escape }}</p>
+  {%- endif -%}
+
+  <div class="why-snoozelab__grid">
+    {%- for block in section.blocks -%}
+      <div class="why-snoozelab__item" {{ block.shopify_attributes }}>
+        <span class="why-snoozelab__icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 14 14">
+            <rect x="2" y="2" width="10" height="10" rx="0" transform="rotate(45 7 7)" fill="none" stroke="#C8BFB0" stroke-width="1"/>
+          </svg>
+        </span>
+        {%- if block.settings.title != blank -%}
+          <h3 class="why-snoozelab__title">{{ block.settings.title | escape }}</h3>
+        {%- endif -%}
+        {%- if block.settings.description != blank -%}
+          <p class="why-snoozelab__text">{{ block.settings.description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Why SnoozeLab",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "WHY SNOOZELAB"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Why SnoozeLab",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Clinically Designed",
+            "description": "Every pillow and massager is engineered around real cervical and lumbar anatomy — not trends."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Premium Memory Foam",
+            "description": "High-density memory foam that contours to your neck and spine, night after night."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "7-Day Returns",
+            "description": "Not satisfied? Send it back within 7 days, no questions asked."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "title": "Free US Shipping",
+            "description": "Free shipping on every order to the US — delivered straight to your door."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
