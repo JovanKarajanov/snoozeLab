@@ -1,0 +1,15 @@
+{{ 'component-scroll-to-top.css' | asset_url | stylesheet_tag }}
+
+<scroll-to-top>
+  <button
+    class="scroll-to-top__button"
+    type="button"
+    aria-label="{{ 'accessibility.scroll_to_top' | t | default: 'Scroll to top' }}"
+  >
+    <svg class="scroll-to-top__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+</scroll-to-top>
+
+<script src="{{ 'scroll-to-top.js' | asset_url }}" defer="defer"></script>

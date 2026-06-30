@@ -13,6 +13,10 @@
       "type": "main-cloud-product",
       "settings": {}
     },
+    "educational_media": {
+      "type": "educational-media",
+      "settings": {}
+    },
     "178224292273365ba6": {
       "type": "apps",
       "blocks": {
@@ -33,6 +37,7 @@
   },
   "order": [
     "cloud_product",
+    "educational_media",
     "178224292273365ba6"
   ]
 }

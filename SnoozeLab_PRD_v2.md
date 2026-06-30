@@ -120,7 +120,7 @@ Critical component. Montblanc uses a two-state navbar: transparent over hero, wh
 | **Height** | 40px |
 |---|---|
 | **Background** | #1A1A1A |
-| **Text** | Montserrat 400, 12px, #FFFFFF, centered. Rotating: "FREE SHIPPING ON ALL US ORDERS" / "30-NIGHT TRIAL — RISK FREE" / "4.9 STARS · 10,000+ CUSTOMERS" |
+| **Text** | Montserrat 400, 12px, #FFFFFF, centered. Rotating: "FREE SHIPPING ON ALL US ORDERS" / "7-NIGHT TRIAL — RISK FREE" / "4.9 STARS · 10,000+ CUSTOMERS" |
 
 ---
 

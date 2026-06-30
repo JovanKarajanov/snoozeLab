@@ -1,0 +1,96 @@
+{{ 'cloud-pillow.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  ── Educational Media ──
+  Per-product rows: add a {% when 'product-handle' %} block inside the
+  {% case %} below. Each row goes on its own line inside the capture block,
+  in the format:
+    Heading text::Body paragraph text
+  Images are pulled from product.images in gallery order — row 1 uses
+  product.images[0], row 2 uses product.images[1], etc. If the product
+  has fewer images than rows, the image slot shows the lavender background
+  with no image. Blank lines inside a capture are ignored and do not
+  consume an image slot.
+
+  To hard-cap how many rows a product shows (regardless of how many lines
+  are in the capture), set edu_max_rows before the capture block:
+    {%- assign edu_max_rows = 2 -%}
+  Omit edu_max_rows or leave it unset to show all defined rows.
+{%- endcomment -%}
+
+{%- case product.handle -%}
+
+  {%- when 'the-cloud-pillow' -%}
+    {%- capture edu_rows_raw -%}
+Ergonomic Memory Foam Pillow for Neck &amp; Shoulder Support::Our ergonomic pillow is contoured to cradle your head, support your neck curve, and relieve shoulder pressure — helping you wake up refreshed instead of stiff. Featuring breathable cooling foam, adjustable height, and hypoallergenic materials, it's built for deeper, healthier sleep.
+6-Zone Cervical Support Design::Unlike a standard pillow, our 6-zone design targets pressure points individually: head cradle, neck curve support, shoulder relief, spine alignment, arm space, and a center cavity that reduces head pressure. This targeted support promotes proper spinal alignment and reduces neck pain for back and side sleepers alike.
+Cooling, Hypoallergenic, Adjustable Comfort::Engineered with breathable, ventilated memory foam to stay cool all night. The adjustable layered design lets you customize your support level, while hypoallergenic, antibacterial materials resist dust mites and allergens — for a cleaner, more restorative sleep environment.
+    {%- endcapture -%}
+
+  {%- when 'ergonomic-memory-foam-lumbar-support-pillow' -%}
+    {%- capture edu_rows_raw -%}
+Lumbar Support Pillow with 26° Curve Guidance::Designed to fit the natural curve of your waist, this lumbar pillow provides a precise 26° angle of support while you sleep on your back. It gently relieves lower back pressure, supports healthy spine alignment, and stretches the lumbar region without strain — all in a breathable, all-night-comfortable design.
+3-Zone Engineering for Multiple Sleep Positions::Built with three distinct zones, this pillow adapts to how you actually sleep. Higher, firmer sides support your head and neck when side sleeping, while the lower, contoured center cradles your cervical spine when sleeping on your back — giving you ergonomic support and durable, breathable comfort in one pillow.
+Extended Support, No Posture Restrictions::The extended surface provides support for your shoulders and arms, not just your lower back, helping maintain healthy spine alignment no matter how you move through the night. Breathable, cooling materials keep you comfortable in any sleeping position.
+    {%- endcapture -%}
+
+  {%- when 'ergonomic-cervical-correction-pillow' -%}
+    {%- assign edu_max_rows = 2 -%}
+    {%- capture edu_rows_raw -%}
+Cervical Comfort, Naturally::Designed to cradle your neck and support the natural curve of your cervical spine while you sleep. The contoured shape helps ease neck tension and promotes a more comfortable, restful position — ideal for anyone dealing with everyday neck stiffness or discomfort.
+Gentle Support for Natural Neck Alignment::A soft, curved design that cradles your neck and encourages relaxed, restful positioning. The ergonomic shape eases tension in the neck and shoulders while supporting a comfortable, natural resting position — helping you settle into deeper, more restorative sleep.
+    {%- endcapture -%}
+
+  {%- when 'ergonomic-heating-neck-massager-with-infrared-therapy' -%}
+    {%- capture edu_rows_raw -%}
+Shiatsu Neck &amp; Shoulder Massager for Tension Relief::Targeted relief where you need it most. Deep kneading nodes apply pressure to the Dayang point to relieve shoulder and back pain, stiffness, and discomfort, while stimulating the Fengmen acupoint to release tension and improve circulation — built for daily recovery, not just occasional use.
+Adjustable Heat Therapy for Deeper Relaxation::Two levels of constant temperature heating (45°/50°) work alongside the massage nodes to soothe sore neck and shoulder muscles. With NTC temperature control and two-speed adjustment, you get consistent, healthy heat therapy without overheating — ideal for unwinding after a long day.
+Powerful Kneading for Neck &amp; Trapezius Muscles::Engineered with a two-way pinch massage motion that mimics deep tissue kneading, this massager targets the neck and shoulder trapezius muscles directly. Combined with constant-temperature hot compress technology, it delivers a spa-level massage experience at home.
+    {%- endcapture -%}
+
+{%- endcase -%}
+
+{%- if edu_rows_raw != blank -%}
+  {%- assign edu_rows = edu_rows_raw | strip | newline_to_br | split: '<br />' -%}
+  <section class="cp-edu">
+    {%- assign edu_row_index = 0 -%}
+    {%- for row in edu_rows -%}
+      {%- assign row_str = row | strip -%}
+      {%- if row_str == blank -%}{%- continue -%}{%- endif -%}
+      {%- if edu_max_rows and edu_row_index >= edu_max_rows -%}{%- break -%}{%- endif -%}
+      {%- assign row_heading = row_str | split: '::' | first | strip -%}
+      {%- assign row_body    = row_str | split: '::' | last  | strip -%}
+      {%- assign row_parity  = edu_row_index | modulo: 2 -%}
+      {%- assign row_image_index = edu_row_index | plus: 1 -%}
+      {%- assign row_image       = product.images[row_image_index] -%}
+      {%- assign row_alt     = row_image.alt | default: row_heading | default: product.title -%}
+      <div class="cp-edu__row{% if row_parity == 1 %} cp-edu__row--reverse{% endif %}">
+        <div class="cp-edu__media">
+          {%- if row_image -%}
+            <img
+              class="cp-edu__img"
+              src="{{ row_image | image_url: width: 900 }}"
+              srcset="{{ row_image | image_url: width: 600 }} 600w, {{ row_image | image_url: width: 900 }} 900w, {{ row_image | image_url: width: 1200 }} 1200w"
+              sizes="(max-width: 749px) 100vw, 50vw"
+              alt="{{ row_alt | escape }}"
+              width="900" height="900"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
+        <div class="cp-edu__text">
+          <h3 class="cp-edu__heading">{{ row_heading }}</h3>
+          <p class="cp-edu__desc">{{ row_body }}</p>
+        </div>
+      </div>
+      {%- assign edu_row_index = edu_row_index | plus: 1 -%}
+    {%- endfor -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Educational Media",
+  "settings": []
+}
+{% endschema %}

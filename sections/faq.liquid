@@ -2,12 +2,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
   rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap"
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap"
   media="print"
   onload="this.media='all'"
 >
 <noscript>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Montserrat:wght@400;500;600&display=swap">
 </noscript>
 
 {%- style -%}
@@ -24,7 +24,7 @@
   }
 
   .faq-{{ section.id }} {
-    max-width: 136rem;
+    max-width: 76rem;
     margin: 0 auto;
   }
 
@@ -34,29 +34,26 @@
     font-size: 3.6rem;
     letter-spacing: 0.01em;
     text-align: center;
-    margin: 0 0 5rem;
-  }
-
-  .faq-{{ section.id }} .faq__columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 6rem;
-  }
-
-  @media screen and (max-width: 749px) {
-    .faq-{{ section.id }} .faq__columns {
-      grid-template-columns: 1fr;
-      gap: 0;
-    }
+    margin: 0 0 4.8rem;
+    color: #1A1A1A;
   }
 
   .faq-{{ section.id }} .faq__item {
-    border: none;
-    border-top: 0.1rem solid rgba(var(--color-foreground), 0.12);
+    border-top: 0.1rem solid #C8BFB0;
+    transition: background-color 0.25s ease;
   }
 
-  .faq-{{ section.id }} .faq__col .faq__item:last-child {
-    border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.12);
+  .faq-{{ section.id }} .faq__item:last-child {
+    border-bottom: 0.1rem solid #C8BFB0;
+  }
+
+  .faq-{{ section.id }} .faq__item:hover {
+    background-color: #F0EDE8;
+  }
+
+  .faq-{{ section.id }} .faq__item[open],
+  .faq-{{ section.id }} .faq__item[data-open] {
+    background-color: #EDEAE4;
   }
 
   .faq-{{ section.id }} .faq__summary {
@@ -66,7 +63,8 @@
     gap: 2.4rem;
     list-style: none;
     cursor: pointer;
-    padding: 2.2rem 0;
+    padding: 2.2rem 2.4rem;
+    user-select: none;
   }
 
   .faq-{{ section.id }} .faq__summary::-webkit-details-marker {
@@ -80,6 +78,7 @@
     line-height: 1.3;
     letter-spacing: 0.01em;
     margin: 0;
+    color: #1A1A1A;
   }
 
   .faq-{{ section.id }} .faq__icon {
@@ -97,8 +96,9 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    background-color: rgb(var(--color-foreground));
+    background-color: #1A1A1A;
     transform: translate(-50%, -50%);
+    transition: background-color 0.25s ease;
   }
 
   .faq-{{ section.id }} .faq__icon::before {
@@ -111,16 +111,38 @@
     height: 100%;
   }
 
-  .faq-{{ section.id }} .faq__item[open] > .faq__summary .faq__icon {
+  .faq-{{ section.id }} .faq__item[open] .faq__icon,
+  .faq-{{ section.id }} .faq__item[data-open] .faq__icon {
     transform: rotate(45deg);
   }
 
+  .faq-{{ section.id }} .faq__item[open] .faq__icon::before,
+  .faq-{{ section.id }} .faq__item[open] .faq__icon::after,
+  .faq-{{ section.id }} .faq__item[data-open] .faq__icon::before,
+  .faq-{{ section.id }} .faq__item[data-open] .faq__icon::after {
+    background-color: #8A9E8C;
+  }
+
+  .faq-{{ section.id }} .faq__answer-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s ease;
+  }
+
+  .faq-{{ section.id }} .faq__item[data-open] .faq__answer-wrapper {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-{{ section.id }} .faq__answer-inner {
+    overflow: hidden;
+  }
+
   .faq-{{ section.id }} .faq__answer {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 1.5rem;
-    line-height: 1.7;
-    color: rgba(var(--color-foreground), 0.7);
-    padding: 0 0 2.4rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.4rem;
+    line-height: 1.75;
+    color: #444444;
+    padding: 0 2.4rem 2.4rem;
   }
 {%- endstyle -%}
 
@@ -131,21 +153,19 @@
         <h2 class="faq__title inline-richtext">{{ section.settings.title | escape }}</h2>
       {%- endif -%}
 
-      {%- assign half = section.blocks.size | divided_by: 2 -%}
-
       <faq-accordion>
-        <div class="faq__columns">
-          <div class="faq__col">
-            {%- for block in section.blocks limit: half -%}
-              <details
-                class="faq__item"
-                id="Faq-{{ block.id }}"
-                {{ block.shopify_attributes }}
-              >
-                <summary class="faq__summary" id="FaqSummary-{{ block.id }}" aria-expanded="false">
-                  <h3 class="faq__question">{{ block.settings.question | escape }}</h3>
-                  <span class="faq__icon" aria-hidden="true"></span>
-                </summary>
+        {%- for block in section.blocks -%}
+          <details
+            class="faq__item"
+            id="Faq-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <summary class="faq__summary" id="FaqSummary-{{ block.id }}" aria-expanded="false">
+              <h3 class="faq__question">{{ block.settings.question | escape }}</h3>
+              <span class="faq__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="faq__answer-wrapper">
+              <div class="faq__answer-inner">
                 <div
                   class="faq__answer"
                   id="FaqAnswer-{{ block.id }}"
@@ -154,32 +174,10 @@
                 >
                   <p>{{ block.settings.answer | newline_to_br }}</p>
                 </div>
-              </details>
-            {%- endfor -%}
-          </div>
-          <div class="faq__col">
-            {%- for block in section.blocks offset: half -%}
-              <details
-                class="faq__item"
-                id="Faq-{{ block.id }}"
-                {{ block.shopify_attributes }}
-              >
-                <summary class="faq__summary" id="FaqSummary-{{ block.id }}" aria-expanded="false">
-                  <h3 class="faq__question">{{ block.settings.question | escape }}</h3>
-                  <span class="faq__icon" aria-hidden="true"></span>
-                </summary>
-                <div
-                  class="faq__answer"
-                  id="FaqAnswer-{{ block.id }}"
-                  role="region"
-                  aria-labelledby="FaqSummary-{{ block.id }}"
-                >
-                  <p>{{ block.settings.answer | newline_to_br }}</p>
-                </div>
-              </details>
-            {%- endfor -%}
-          </div>
-        </div>
+              </div>
+            </div>
+          </details>
+        {%- endfor -%}
       </faq-accordion>
     </div>
   </div>
@@ -217,24 +215,49 @@
     class FaqAccordion extends HTMLElement {
       constructor() {
         super();
-        this.addEventListener('toggle', this.onToggle.bind(this), true);
+        this.addEventListener('click', this.onClick.bind(this), true);
       }
 
-      onToggle(event) {
-        const details = event.target;
+      onClick(event) {
+        const summary = event.target.closest('summary.faq__summary');
+        if (!summary) return;
+
+        const details = summary.parentElement;
         if (!(details instanceof HTMLDetailsElement)) return;
 
-        const summary = details.querySelector('summary');
-        if (summary) summary.setAttribute('aria-expanded', details.open);
+        event.preventDefault();
 
-        if (!details.open) return;
+        if (details.open) {
+          this.closeItem(details);
+        } else {
+          this.querySelectorAll('details[open]').forEach((d) => {
+            if (d !== details) this.closeItem(d);
+          });
+          this.openItem(details);
+        }
+      }
 
-        this.querySelectorAll('details[open]').forEach((openDetails) => {
-          if (openDetails === details) return;
-          openDetails.removeAttribute('open');
-          const openSummary = openDetails.querySelector('summary');
-          if (openSummary) openSummary.setAttribute('aria-expanded', 'false');
+      openItem(details) {
+        details.open = true;
+        details.querySelector('summary').setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => details.setAttribute('data-open', ''));
         });
+      }
+
+      closeItem(details) {
+        details.removeAttribute('data-open');
+        details.querySelector('summary').setAttribute('aria-expanded', 'false');
+        const wrapper = details.querySelector('.faq__answer-wrapper');
+        if (wrapper) {
+          wrapper.addEventListener(
+            'transitionend',
+            () => { details.open = false; },
+            { once: true }
+          );
+        } else {
+          details.open = false;
+        }
       }
     }
 

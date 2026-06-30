@@ -335,7 +335,18 @@
                               {%- assign color_key = color_val | downcase | replace: ' ', '-' -%}
                               {%- unless seen_colors contains color_key -%}
                                 {%- assign seen_colors = seen_colors | append: color_key | append: '|' -%}
-                                {%- assign swatch_img = variant.featured_image | default: product.featured_image -%}
+                                {%- assign swatch_img = variant.featured_image -%}
+                                {%- unless swatch_img -%}
+                                  {%- assign color_val_lower = color_val | downcase | strip -%}
+                                  {%- for img in product.images -%}
+                                    {%- assign img_alt_lower = img.alt | downcase | strip -%}
+                                    {%- if img_alt_lower contains color_val_lower -%}
+                                      {%- assign swatch_img = img -%}
+                                      {%- break -%}
+                                    {%- endif -%}
+                                  {%- endfor -%}
+                                {%- endunless -%}
+                                {%- assign swatch_img = swatch_img | default: product.featured_image -%}
                                 <button
                                   class="fyr-swatch"
                                   type="button"

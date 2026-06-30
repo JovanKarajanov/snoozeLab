@@ -69,6 +69,7 @@
 
     {%- comment -%} One thumbnail per unique colour value (option 1) {%- endcomment -%}
     <div class="cp-pdp__thumbs" id="cp-thumbs">
+      {%- assign shown_image_ids = ',' -%}
       {%- for color_val in color_option.values -%}
         {%- if color_val contains 'Pillowcase' -%}{%- continue -%}{%- endif -%}
         {%- liquid
@@ -90,6 +91,9 @@
               assign t_img_obj = variant.featured_image
             endif
           endfor
+          if t_img_obj
+            assign shown_image_ids = shown_image_ids | append: t_img_obj.id | append: ','
+          endif
           assign thumb_active = false
           if selected_variant.option1 == color_val
             assign thumb_active = true
@@ -123,7 +127,7 @@
       <div class="cp-pdp__top-row">
         <span class="cp-pdp__badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          Free shipping &amp; returns
+          Free US shipping &amp; returns
         </span>
         <button class="cp-pdp__wish" aria-label="Save to wishlist" type="button">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
@@ -324,6 +328,75 @@
     </div>
   </div>
 </div>
+
+{%- comment -%}
+  ── Feature photos ──
+  Surfaces any product media that isn't already shown above as a colour
+  thumbnail (e.g. lifestyle shots, cross-sections, infographics), paired
+  with a short description. Captions are hardcoded per product handle
+  below — add a new {% when %} branch for each new product, with one
+  "Heading::Body copy" line per leftover photo, in the order those photos
+  appear in the product's media gallery in Shopify Admin.
+{%- endcomment -%}
+{%- comment -%}
+  Feature captions intentionally left empty — the Educational Media section
+  (sections/educational-media.liquid) now owns all alternating image/text
+  content for every product. The block below is kept as a template for any
+  future product that needs Feature Photos without a matching Educational
+  Media entry.
+{%- endcomment -%}
+{%- case product.handle -%}
+{%- endcase -%}
+{%- assign feature_captions = feature_captions_raw | strip | newline_to_br | split: '<br />' -%}
+
+{%- assign missing_image_count = 0 -%}
+{%- for image in product.images -%}
+  {%- assign image_id_str = ',' | append: image.id | append: ',' -%}
+  {%- unless shown_image_ids contains image_id_str -%}
+    {%- assign missing_image_count = missing_image_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+{%- if missing_image_count > 0 and feature_captions_raw != blank -%}
+  {%- assign feature_index = -1 -%}
+  <section class="cp-feature-photos" id="cp-feature-photos">
+    {%- for image in product.images -%}
+      {%- assign image_id_str = ',' | append: image.id | append: ',' -%}
+      {%- if shown_image_ids contains image_id_str -%}{%- continue -%}{%- endif -%}
+      {%- assign feature_index = feature_index | plus: 1 -%}
+      {%- assign feature_heading = '' -%}
+      {%- assign feature_body = '' -%}
+      {%- if feature_index < feature_captions.size -%}
+        {%- assign feature_caption = feature_captions[feature_index] | strip -%}
+        {%- if feature_caption != blank -%}
+          {%- assign feature_heading = feature_caption | split: '::' | first | strip -%}
+          {%- assign feature_body = feature_caption | split: '::' | last | strip -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- assign feature_alt = image.alt | default: feature_heading | default: product.title -%}
+      {%- assign feature_parity = feature_index | modulo: 2 -%}
+      <div class="cp-feature-row{% if feature_heading == blank %} cp-feature-row--photo-only{% elsif feature_parity == 1 %} cp-feature-row--reverse{% endif %}">
+        <div class="cp-feature-row__media">
+          <img
+            class="cp-feature-row__img"
+            src="{{ image | image_url: width: 900 }}"
+            srcset="{{ image | image_url: width: 600 }} 600w, {{ image | image_url: width: 900 }} 900w, {{ image | image_url: width: 1200 }} 1200w"
+            sizes="(max-width: 749px) 100vw, 50vw"
+            alt="{{ feature_alt | escape }}"
+            width="900" height="900"
+            loading="lazy"
+          >
+        </div>
+        {%- if feature_heading != blank -%}
+          <div class="cp-feature-row__text">
+            <h3 class="cp-feature-row__heading">{{ feature_heading }}</h3>
+            <p class="cp-feature-row__desc">{{ feature_body }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </section>
+{%- endif -%}
 
 <script>
 (function () {
