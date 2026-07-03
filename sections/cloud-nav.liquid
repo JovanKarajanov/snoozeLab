@@ -3,9 +3,9 @@
 <nav class="cp-nav">
   <div class="cp-nav__inner">
     <ul class="cp-nav__links">
-      <li><a href="#products">Shop</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="{{ routes.root_url }}#products">Shop</a></li>
+      <li><a href="{{ routes.root_url }}#about">About</a></li>
+      <li><a href="{{ routes.root_url }}#reviews">Reviews</a></li>
     </ul>
 
     <a href="/" class="cp-nav__logo" aria-label="Home">
@@ -59,15 +59,29 @@
     }
 
     document.addEventListener('click', function (e) {
-      var link = e.target.closest('a[href^="#"]');
+      var link = e.target.closest('a[href*="#"]');
       if (!link) return;
-      var hash = link.getAttribute('href');
+      var hash = link.hash;
       if (!hash || hash === '#') return;
+      /* only intercept when the link points to an anchor on this same page;
+         otherwise let the browser navigate to the target page first */
+      if (link.pathname !== window.location.pathname) return;
       var target = document.querySelector(hash);
       if (!target) return;
       e.preventDefault();
       smoothScrollTo(target);
     });
+
+    /* after navigating here from another page with a #hash, correct for
+       the fixed nav height since the browser's native jump doesn't */
+    if (window.location.hash) {
+      var initialTarget = document.querySelector(window.location.hash);
+      if (initialTarget) {
+        window.addEventListener('load', function () {
+          smoothScrollTo(initialTarget);
+        });
+      }
+    }
   })();
 </script>
 
