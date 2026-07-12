@@ -268,13 +268,13 @@
 
       <hr class="cp-pdp__divider">
 
-      <p class="cp-pdp__desc">
+      <div class="cp-pdp__desc">
         {%- if product.description != blank -%}
-          {{ product.description | strip_html | truncate: 220 }}
+          {{ product.description }}
         {%- else -%}
-          Engineered with 6-zone contoured memory foam for perfect spinal alignment. Stays cool all night, adjustable height, built for every sleep position.
+          <p>Engineered with 6-zone contoured memory foam for perfect spinal alignment. Stays cool all night, adjustable height, built for every sleep position.</p>
         {%- endif -%}
-      </p>
+      </div>
 
       <!-- Accordion -->
       <div class="cp-pdp__accordion">
@@ -284,12 +284,33 @@
             <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <div class="cp-pdp__details-body">
-            <p>Premium open-cell memory foam core with 6-zone contoured support. Cooling gel-infused cover. Hypoallergenic cotton pillowcase.</p>
-            <ul>
-              <li>Core: CertiPUR-US® certified memory foam</li>
-              <li>Cover: 40% bamboo, 60% polyester blend</li>
-              <li>Pillowcase: 100% long-staple cotton</li>
-            </ul>
+            {% case product.handle %}
+              {% when 'the-cloud-pillow' %}
+                <ul>
+                  <li><strong>Core:</strong> Polyurethane memory foam with medium firmness for balanced head and neck support</li>
+                  <li><strong>Cover:</strong> Soft, breathable cloud-textured fiber pillowcase — removable and washable</li>
+                  <li><strong>Shape:</strong> Butterfly ergonomic contour designed for side and back sleepers</li>
+                </ul>
+              {% when 'ergonomic-memory-foam-lumbar-support-pillow' %}
+                <ul>
+                  <li><strong>Core:</strong> High-density memory foam that adapts to your spine's natural curve</li>
+                  <li><strong>Cover:</strong> Breathable polyester in a plain weave — moisture-wicking and easy to clean</li>
+                  <li><strong>Shape:</strong> Contoured ergonomic design for lumbar support at the desk, in the car, or in bed</li>
+                </ul>
+              {% when 'ergonomic-cervical-correction-pillow' %}
+                <ul>
+                  <li><strong>Core:</strong> Lightweight foam interior that holds the C-shape while staying flexible</li>
+                  <li><strong>Cover:</strong> Skin-friendly non-woven fabric — soft and breathable for extended wear</li>
+                  <li><strong>Shape:</strong> C-shaped cervical structure that wraps the neck to support natural alignment</li>
+                </ul>
+              {% when 'ergonomic-heating-neck-massager-with-infrared-therapy' %}
+                <ul>
+                  <li><strong>Surface:</strong> Soft PU leather — comfortable against skin and easy to wipe clean</li>
+                  <li><strong>Structure:</strong> Flexible U-shaped wrap that contours to the neck and shoulders</li>
+                  <li><strong>Build:</strong> Rechargeable internal battery with integrated massage nodes and heating elements</li>
+                  <li><strong>Model:</strong> K5</li>
+                </ul>
+            {% endcase %}
           </div>
         </details>
         <details class="cp-pdp__details">
@@ -298,11 +319,20 @@
             <svg class="cp-pdp__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
           </summary>
           <div class="cp-pdp__details-body">
-            <ul>
-              <li>Standard: 26″ × 18″ × 4.5″ — 3.2 lbs</li>
-              <li>King: 34″ × 18″ × 4.5″ — 4.1 lbs</li>
-              <li>Adjustable height range: 3″–5.5″</li>
-            </ul>
+            {% case product.handle %}
+              {% when 'the-cloud-pillow' %}
+                <p>Dimensions: 21.26 × 12.5 inches (54 × 32cm)</p>
+                <p>Weight: 1.5 lbs (680g)</p>
+              {% when 'ergonomic-memory-foam-lumbar-support-pillow' %}
+                <p>Dimensions: 15.35 × 8.66 × 3.94 inches (39 × 22 × 10cm)</p>
+                <p>Weight: 14.81 oz (420g)</p>
+              {% when 'ergonomic-cervical-correction-pillow' %}
+                <p>Dimensions: 8.66 × 6.69 inches (22 × 17cm)</p>
+                <p>Weight: 10.58 oz (300g)</p>
+              {% when 'ergonomic-heating-neck-massager-with-infrared-therapy' %}
+                <p>Dimensions: 9.2 × 6.2 × 6.5 inches (23 × 16 × 17cm)</p>
+                <p>Weight: 2.73 lbs (1.24kg)</p>
+            {% endcase %}
           </div>
         </details>
         <details class="cp-pdp__details">
@@ -314,6 +344,7 @@
             <p>Free standard shipping in US on all orders (7–14 business days).</p>
           </div>
         </details>
+        {%- if product.handle == 'the-cloud-pillow' -%}
         <details class="cp-pdp__details">
           <summary class="cp-pdp__summary">
             Care Instructions
@@ -323,6 +354,7 @@
             <p>Pillowcase: Machine wash cold, tumble dry low. Core: Spot clean only — air dry fully before use. Do not machine wash the memory foam core.</p>
           </div>
         </details>
+        {%- endif -%}
       </div>
 
     </div>

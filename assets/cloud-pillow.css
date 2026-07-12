@@ -1041,6 +1041,23 @@ html { scroll-behavior: smooth; }
   color: var(--cp-grey);
   margin: 0 0 24px;
 }
+.cp-pdp__desc p {
+  margin: 0 0 12px;
+}
+.cp-pdp__desc p:last-child {
+  margin-bottom: 0;
+}
+.cp-pdp__desc strong {
+  font-weight: 600;
+  color: var(--cp-text);
+}
+.cp-pdp__desc ul {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+.cp-pdp__desc li {
+  margin-bottom: 4px;
+}
 
 /* Accordion */
 .cp-pdp__accordion {
